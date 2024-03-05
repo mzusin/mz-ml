@@ -1,11 +1,6 @@
-export interface IMlStandardizeResult {
-    mean: number;
-    stdDev: number;
-    data: number[];
-}
-
-export interface IMlNormalizeResult {
-    min: number;
-    max: number;
-    data: number[];
+export interface ILinearRegression {
+    train: (features: number[], targets: number[]) => void;
+    getYIntercept: () => number;
+    getSlope: () => number;
+    predict: (feature: number) => number;
 }

@@ -1,52 +1,75 @@
-class LinearRegression {
-    private readonly learningRate: number;
-    private readonly iterations: number;
-    private theta0: number;
-    private theta1: number;
+import { ILinearRegression } from '../types';
 
-    constructor(learningRate: number, iterations: number) {
-        this.learningRate = learningRate;
-        this.iterations = iterations;
-        this.theta0 = 0;
-        this.theta1 = 0;
-    }
+/**
+ * Usage:
+ * --------
+ * const regression = LinearRegression(0.01, 1000);
+ *
+ * const x = [1, 2, 3, 4, 5];
+ * const y = [2, 4, 5, 4, 5];
+ * regression.train(x, y);
+ *
+ * console.log('Theta0:', regression.getYIntercept());
+ * console.log('Theta1:', regression.getSlope());
+ * console.log('Prediction for x=6:', regression.predict(6));
+ */
+export const LinearRegression = (learningRate: number, iterations: number) : ILinearRegression => {
 
-    train(x: number[], y: number[]) {
-        const n = x.length;
-        for (let iter = 0; iter < this.iterations; iter++) {
-            let theta0Sum = 0;
-            let theta1Sum = 0;
-            for (let i = 0; i < n; i++) {
-                const prediction = this.predict(x[i]);
-                const error = prediction - y[i];
-                theta0Sum += error;
-                theta1Sum += error * x[i];
-            }
-            const theta0Gradient = (2 / n) * theta0Sum;
-            const theta1Gradient = (2 / n) * theta1Sum;
-            this.theta0 -= this.learningRate * theta0Gradient;
-            this.theta1 -= this.learningRate * theta1Gradient;
+    let yIntercept = 0;
+    let slope = 0;
+
+    /**
+     * Gradient descent is an optimization algorithm used to minimize a cost function
+     * (also known as loss function).
+     * The goal of gradient descent is to iteratively adjust the parameters (yIntercept and slope in this case)
+     * to minimize this cost function.
+     */
+    const gradientDescentOptimization = (features: number[], targets: number[]) => {
+        let yInterceptSum = 0;
+        let slopeSum = 0;
+        const n = features.length;
+
+        for(let i=0; i<n; i++) {
+
+            const prediction = predict(features[i]);
+            const error = prediction - targets[i];
+
+            yInterceptSum += error;
+            slopeSum += error * features[i];
         }
+
+        const yInterceptGradient = (2 / n) * yInterceptSum;
+        const slopeGradient = (2 / n) * slopeSum;
+
+        yIntercept -= learningRate * yInterceptGradient;
+        slope -= learningRate * slopeGradient;
+    };
+
+    const train = (features: number[], targets: number[]) => {
+        // TODO: check that x and y has the same length
+        // TODO: batches, epochs
+
+        for(let i=0; i<iterations; i++) {
+            gradientDescentOptimization(features, targets);
+        }
+    };
+
+    const predict = (feature: number) => {
+        return yIntercept + slope * feature;
+    };
+
+    const getYIntercept = () => {
+        return yIntercept;
     }
 
-    predict(x: number): number {
-        return this.theta0 + this.theta1 * x;
-    }
+    const getSlope = () => {
+        return slope;
+    };
 
-    getTheta0(): number {
-        return this.theta0;
+    return {
+        train,
+        predict,
+        getYIntercept,
+        getSlope,
     }
-
-    getTheta1(): number {
-        return this.theta1;
-    }
-}
-
-// Example usage
-const regression = new LinearRegression(0.01, 1000);
-const x = [1, 2, 3, 4, 5];
-const y = [2, 4, 5, 4, 5];
-regression.train(x, y);
-console.log('Theta0:', regression.getTheta0());
-console.log('Theta1:', regression.getTheta1());
-console.log('Prediction for x=6:', regression.predict(6));
+};
