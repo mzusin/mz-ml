@@ -1,16 +1,71 @@
 {
   "name": "mz-ml",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "mzMl - a collection of TypeScript-based ML helpers.",
+  "main": "./dist/mz-ml.min.js",
+  "module": "./dist/mz-ml.esm.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "import": "./dist/mz-ml.esm.js",
+    "require": "./dist/mz-ml.node.cjs",
+    "default": "./dist/mz-ml.esm.js"
   },
-  "keywords": [],
+  "scripts": {
+    "build:all": "npm run build:es6 & npm run build:node & npm run build:esm",
+    "watch:all": "npm run watch:es6 & npm run watch:node & npm run watch:esm",
+    "build:es6": "node run/es6.js",
+    "watch:es6": "node run/es6.js -- watch",
+    "build:node": "node run/node.js",
+    "watch:node": "node run/node.js -- watch",
+    "build:esm": "node run/esm.js",
+    "watch:esm": "node run/esm.js -- watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "eslint": "eslint ./src/**",
+    "typescript-declarations": "tsc --emitDeclarationOnly",
+    "docs:website": "http-server ./docs",
+    "docs:build": "node ./src/docs/generator/index.js",
+    "docs:watch": "nodemon ./src/docs/generator/index.js"
+  },
+  "type": "module",
+  "keywords": [
+    "ml"
+  ],
   "author": "Miriam Zusin <miriam.zusin@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/mzusin/mz-ml"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "nodemonConfig": {
+    "restartable": "rs",
+    "ignore": [
+      ".git",
+      "node_modules/**/node_modules"
+    ],
+    "verbose": false,
+    "watch": [
+      "src/"
+    ],
+    "ext": "js,json,html,css,md,ts,tsx,glsl"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.20.2",
+    "@types/jest": "^29.2.3",
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
+    "@typescript-eslint/parser": "^5.43.0",
+    "esbuild": "^0.16.3",
+    "eslint": "^8.27.0",
+    "highlight.js": "^11.7.0",
+    "jest": "^29.3.1",
+    "markdown-documentation-maker": "^1.0.13",
+    "mz-particles": "^1.0.5",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1"
   }
 }
