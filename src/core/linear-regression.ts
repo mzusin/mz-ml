@@ -53,7 +53,10 @@ export const LinearRegression = (learningRate: number, iterations: number) : ILi
             gradientDescentOptimization(features, targets);
         }
     };
-
+    
+    /**
+     * f(x) = b + m⋅x
+     */
     const predict = (feature: number) => {
         return yIntercept + slope * feature;
     };

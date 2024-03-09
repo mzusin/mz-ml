@@ -67,5 +67,8 @@
     "mz-particles": "^1.0.5",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "mz-math": "^3.0.22"
   }
 }
