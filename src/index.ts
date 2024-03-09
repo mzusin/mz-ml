@@ -1,5 +1,5 @@
 import * as LinearRegression from './core/linear-regression';
-import * as lossFunctions from './core/loss-functions';
+import * as lossFunctions from './core/loss';
 
 const api = {
     ...LinearRegression,
@@ -15,4 +15,4 @@ declare global {
 window.mzMl = window.mzMl || api;
 
 export * from './core/linear-regression';
-export * from './core/loss-functions';
+export * from './core/loss';

@@ -1,0 +1,1 @@
+export const ERR_NON_EQUAL_COUNT = 'Actual values count should be equal to the predicted values count.';
