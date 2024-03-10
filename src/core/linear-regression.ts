@@ -1,4 +1,6 @@
 import { ILinearRegression } from '../types';
+import { gradientDescent } from './optimization';
+import { meanSquaredError } from './loss';
 
 /**
  * Usage:
@@ -53,7 +55,7 @@ export const LinearRegression = (learningRate: number, iterations: number) : ILi
             gradientDescentOptimization(features, targets);
         }
     };
-    
+
     /**
      * f(x) = b + m⋅x
      */
@@ -76,3 +78,65 @@ export const LinearRegression = (learningRate: number, iterations: number) : ILi
         getSlope,
     }
 };
+
+/*export const LinearRegression1 = (learningRate: number, iterations: number) => {
+    let yIntercept = 0;
+    let slope = 0;
+
+    const train = (features: number[], targets: number[]) => {
+        for (let i = 0; i < iterations; i++) {
+            gradientDescentStep(features, targets);
+        }
+    };
+
+    const gradientDescentStep = (features: number[], targets: number[]) => {
+        const gradientYIntercept = gradientDescent(yIntercept, learningRate, targets, features, meanSquaredError);
+        const gradientSlope = gradientDescent(slope, learningRate, targets, features, meanSquaredError);
+
+        yIntercept -= gradientYIntercept;
+        slope -= gradientSlope;
+    };
+
+    const predict = (feature: number) => {
+        return yIntercept + slope * feature;
+    };
+
+    return {
+        train,
+        predict
+    };
+};*/
+
+/*
+export const LinearRegression2 = (learningRate: number, iterations: number) => {
+    let yIntercept = 0;
+    let slope = 0;
+
+    const train = (features: number[], targets: number[]) => {
+        const n = features.length;
+        for (let i = 0; i < iterations; i++) {
+            let gradientYIntercept = 0;
+            let gradientSlope = 0;
+            for (let j = 0; j < n; j++) {
+                const prediction = yIntercept + slope * features[j];
+                const error = prediction - targets[j];
+                gradientYIntercept += error;
+                gradientSlope += error * features[j];
+            }
+            gradientYIntercept *= 2 / n;
+            gradientSlope *= 2 / n;
+
+            yIntercept -= learningRate * gradientYIntercept;
+            slope -= learningRate * gradientSlope;
+        }
+    };
+
+    const predict = (feature: number) => {
+        return yIntercept + slope * feature;
+    };
+
+    return {
+        train,
+        predict
+    };
+};*/

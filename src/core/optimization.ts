@@ -36,3 +36,4 @@ export const gradientDescent = (
     const gradient = (loss1 - loss2) / DERIVATIVE_STEP_SIZE;
     return setDecimalPlaces(currentWeight - learningRate * gradient, decimalPlaces);
 };
+
