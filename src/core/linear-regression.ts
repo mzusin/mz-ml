@@ -58,6 +58,7 @@ export class LinearRegression {
 
     constructor(options: ILinearRegressionOptions) {
         this.options = options;
+        this.options.points = [...this.options.points];
         this.m = 0;
         this.b = 0;
     }
