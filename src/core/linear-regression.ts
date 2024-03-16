@@ -69,14 +69,14 @@ export class LinearRegression {
         }
     }
 
-    private gradientDescent(m: number, b: number) {
+    private gradientDescent() {
         let mGradientSum = 0;
         let bGradientSum = 0;
         const n = this.options.points.length;
 
         for(let i=0; i<n; i++) {
             const [x, actualValue] = this.options.points[i];
-            const predictedValue = m * x + b;
+            const predictedValue = this.m * x + this.b;
 
             const diff = (-2/n) * (actualValue - predictedValue);
 
@@ -88,10 +88,10 @@ export class LinearRegression {
         }
 
         // new_m = current_m - learning_rate * dE/dm
-        const gradientM = m - this.options.learningRate * mGradientSum;
+        const gradientM = this.m - this.options.learningRate * mGradientSum;
 
         // new_b = current_b - learning_rate * dE/db
-        const gradientB = b - this.options.learningRate * bGradientSum;
+        const gradientB = this.b - this.options.learningRate * bGradientSum;
 
         return [gradientM, gradientB];
     }
@@ -143,7 +143,7 @@ export class LinearRegression {
             }
             else{
                 // Simple Gradient Descent -----------------------------------
-                const [gradientM, gradientB] = this.gradientDescent(this.m, this.b);
+                const [gradientM, gradientB] = this.gradientDescent();
 
                 if(!!this.options.epochsCallback && (typeof this.options.epochsCallback === 'function')) {
                     this.options.epochsCallback(i, this.options.epochs, gradientM, gradientB);
