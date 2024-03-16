@@ -1,142 +1,91 @@
-import { ILinearRegression } from '../types';
-import { gradientDescent } from './optimization';
-import { meanSquaredError } from './loss';
-
 /**
- * Usage:
- * --------
- * const regression = LinearRegression(0.01, 1000);
+ * Simple Linear Regression
  *
- * const x = [1, 2, 3, 4, 5];
- * const y = [2, 4, 5, 4, 5];
- * regression.train(x, y);
+ * Mean Squared Error (MSE): Error function = Loss function
+ * E = (1/n) * sum_from_0_to_n((actual_value - predicted_value)^2)
+ * E = (1/n) * sum_from_0_to_n((actual_value - (mx + b))^2)
+ * ---------------------------------------------------------
+ * Goal: Minimize the error function - find (m, b) with the lowest possible E.
+ * How:
  *
- * console.log('Theta0:', regression.getYIntercept());
- * console.log('Theta1:', regression.getSlope());
- * console.log('Prediction for x=6:', regression.predict(6));
+ * - Take partial derivative with respect m and also with respect b.
+ *   This helps to find the "m" that maximally increase E,
+ *   and "b" that maximally increase E (the steepest ascent).
+ *
+ * - After we found them, we get the opposite direction
+ *   to find the way to decrease E (the steepest descent).
+ * ---------------------------------------------------------
+ *
+ * How to calculate partial derivative of "m"?
+ * dE/dm = (1/n) * sum_from_0_to_n(2 * (actual_value - (mx + b)) * (-x))
+ * dE/dm = (-2/n) * sum_from_0_to_n(x * (actual_value - (mx + b)))
+ * ---------------------------------------------------------
+ *
+ * How to calculate partial derivative of "b"?
+ * dE/db = (-2/n) * sum_from_0_to_n(actual_value - (mx + b))
+ * ---------------------------------------------------------
+ *
+ * After the derivatives are found (the steepest ascent)
+ * we need to find the steepest descent:
+ *
+ * new_m = current_m - learning_rate * dE/dm
+ * new_b = current_b - learning_rate * dE/db
  */
-export const LinearRegression = (learningRate: number, iterations: number) : ILinearRegression => {
+export const gradientDescent = (learningRate: number, m: number, b: number, points: [number, number][]) => {
 
-    let yIntercept = 0;
-    let slope = 0;
+    let mGradientSum = 0;
+    let bGradientSum = 0;
+    const n = points.length;
 
-    /**
-     * Gradient descent is an optimization algorithm used to minimize a cost function
-     * (also known as loss function).
-     * The goal of gradient descent is to iteratively adjust the parameters (yIntercept and slope in this case)
-     * to minimize this cost function.
-     */
-    const gradientDescentOptimization = (features: number[], targets: number[]) => {
-        let yInterceptSum = 0;
-        let slopeSum = 0;
-        const n = features.length;
+    for(let i=0; i<n; i++) {
+        const [x, actualValue] = points[i];
+        const predictedValue = m * x + b;
 
-        for(let i=0; i<n; i++) {
+        const diff = (-2/n) * (actualValue - predictedValue);
 
-            const prediction = predict(features[i]);
-            const error = prediction - targets[i];
+        // dE/dm = (-2/n) * sum_from_0_to_n(x * (actual_value - (mx + b)))
+        mGradientSum += x * diff;
 
-            yInterceptSum += error;
-            slopeSum += error * features[i];
-        }
-
-        const yInterceptGradient = (2 / n) * yInterceptSum;
-        const slopeGradient = (2 / n) * slopeSum;
-
-        yIntercept -= learningRate * yInterceptGradient;
-        slope -= learningRate * slopeGradient;
-    };
-
-    const train = (features: number[], targets: number[]) => {
-        // TODO: check that x and y has the same length
-        // TODO: batches, epochs
-
-        for(let i=0; i<iterations; i++) {
-            gradientDescentOptimization(features, targets);
-        }
-    };
-
-    /**
-     * f(x) = b + m⋅x
-     */
-    const predict = (feature: number) => {
-        return yIntercept + slope * feature;
-    };
-
-    const getYIntercept = () => {
-        return yIntercept;
+        // dE/db = (-2/n) * sum_from_0_to_n(actual_value - (mx + b))
+        bGradientSum += diff;
     }
 
-    const getSlope = () => {
-        return slope;
-    };
+    // new_m = current_m - learning_rate * dE/dm
+    const gradientM = m - learningRate * mGradientSum;
 
-    return {
-        train,
-        predict,
-        getYIntercept,
-        getSlope,
-    }
+    // new_b = current_b - learning_rate * dE/db
+    const gradientB  = b - learningRate * bGradientSum;
+
+    return [gradientM, gradientB];
 };
 
-/*export const LinearRegression1 = (learningRate: number, iterations: number) => {
-    let yIntercept = 0;
-    let slope = 0;
+/**
+ * Simple Linear Regression
+ * -----------------------------
+ * Learning rate can be 0.0001
+ * Epochs can be 1000
+ */
+export const SimpleLinearRegression = (learningRate: number, epochs: number, points: [number, number][]) => {
+    let m = 0;
+    let b = 0;
 
-    const train = (features: number[], targets: number[]) => {
-        for (let i = 0; i < iterations; i++) {
-            gradientDescentStep(features, targets);
-        }
-    };
+    for(let i=0; i<epochs; i++) {
+        const [gradientM, gradientB] = gradientDescent(learningRate, m, b, points);
+        m = gradientM;
+        b = gradientB;
+    }
 
-    const gradientDescentStep = (features: number[], targets: number[]) => {
-        const gradientYIntercept = gradientDescent(yIntercept, learningRate, targets, features, meanSquaredError);
-        const gradientSlope = gradientDescent(slope, learningRate, targets, features, meanSquaredError);
+    return [m, b];
+};
 
-        yIntercept -= gradientYIntercept;
-        slope -= gradientSlope;
-    };
+/*const getPoints = () => {
 
-    const predict = (feature: number) => {
-        return yIntercept + slope * feature;
-    };
-
-    return {
-        train,
-        predict
-    };
-};*/
-
-/*
-export const LinearRegression2 = (learningRate: number, iterations: number) => {
-    let yIntercept = 0;
-    let slope = 0;
-
-    const train = (features: number[], targets: number[]) => {
-        const n = features.length;
-        for (let i = 0; i < iterations; i++) {
-            let gradientYIntercept = 0;
-            let gradientSlope = 0;
-            for (let j = 0; j < n; j++) {
-                const prediction = yIntercept + slope * features[j];
-                const error = prediction - targets[j];
-                gradientYIntercept += error;
-                gradientSlope += error * features[j];
-            }
-            gradientYIntercept *= 2 / n;
-            gradientSlope *= 2 / n;
-
-            yIntercept -= learningRate * gradientYIntercept;
-            slope -= learningRate * gradientSlope;
-        }
-    };
-
-    const predict = (feature: number) => {
-        return yIntercept + slope * feature;
-    };
-
-    return {
-        train,
-        predict
-    };
+    // study time ---> exam score
+    return [
+        [10, 70],
+        [12, 75],
+        [8, 54],
+        [40, 99],
+        [1, 11],
+    ];
 };*/
