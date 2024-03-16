@@ -26,7 +26,8 @@
     "docs:website": "http-server ./docs",
     "docs:build": "node ./src/docs/generator/index.js",
     "docs:watch": "nodemon ./src/docs/generator/index.js",
-    "node-test": "node ./test/node/linear-regression.js"
+    "node:linear-regression": "node ./test/node/linear-regression.js",
+    "node:linear-regression-sgd": "node ./test/node/linear-regression-sgd.js"
   },
   "type": "module",
   "keywords": [
