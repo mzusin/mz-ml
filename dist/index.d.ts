@@ -1,4 +1,18 @@
 declare module 'mz-ml' {
-    export const gradientDescent: (learningRate: number, m: number, b: number, points: [number, number][]) => number[];
-    export const SimpleLinearRegression: (learningRate: number, epochs: number, points: [number, number][]) => number[];
+    export interface ILinearRegressionOptions {
+        learningRate: number;
+        epochs: number;
+        points: [number, number][];
+        epochsCallback?: (epoch: number, epochsCount: number, gradientM: number, gradientB: number) => void;
+    }
+
+    export class SimpleLinearRegression {
+        options: ILinearRegressionOptions;
+        m: number;
+        b: number;
+        constructor(options: ILinearRegressionOptions);
+        private gradientDescent;
+        train(): number[];
+        predict(x: number): number;
+    }
 }

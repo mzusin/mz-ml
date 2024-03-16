@@ -25,7 +25,8 @@
     "typescript-declarations": "tsc --emitDeclarationOnly",
     "docs:website": "http-server ./docs",
     "docs:build": "node ./src/docs/generator/index.js",
-    "docs:watch": "nodemon ./src/docs/generator/index.js"
+    "docs:watch": "nodemon ./src/docs/generator/index.js",
+    "node-test": "node ./test/node/linear-regression.js"
   },
   "type": "module",
   "keywords": [
@@ -65,6 +66,7 @@
     "jest": "^29.3.1",
     "markdown-documentation-maker": "^1.0.13",
     "mz-particles": "^1.0.5",
+    "nodeplotlib": "^1.1.2",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1"
   },
