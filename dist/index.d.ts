@@ -4,7 +4,9 @@ declare module 'mz-ml' {
 
     export enum Optimization {
         GradientDescent = 0,
-        StochasticGradientDescent = 1
+        StochasticGradientDescent = 1,
+        MiniBatchGradientDescent = 2,
+
     }
     export interface ILinearRegressionOptions {
         learningRate: number;
@@ -13,9 +15,10 @@ declare module 'mz-ml' {
         epochsCallback?: (epoch: number, epochsCount: number, gradientM: number, gradientB: number) => void;
         optimization?: Optimization;
         shuffle?: boolean;
+        batchSize?: number;
     }
 
-    export class SimpleLinearRegression {
+    export class LinearRegression {
         options: ILinearRegressionOptions;
         m: number;
         b: number;

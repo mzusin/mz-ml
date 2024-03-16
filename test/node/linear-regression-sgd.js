@@ -1,7 +1,7 @@
 import { plot } from 'nodeplotlib'; // https://github.com/ngfelixl/nodeplotlib
 import { getRandomInt } from 'mz-math';
 import fs from 'fs';
-import { SimpleLinearRegression } from '../../dist/mz-ml.node.cjs';
+import { LinearRegression } from '../../dist/mz-ml.node.cjs';
 
 const createRandomData = () => {
 
@@ -31,7 +31,7 @@ const init = () => {
         points.push([xArr[i], yArr[i]]);
     }
 
-    const model = new SimpleLinearRegression({
+    const model = new LinearRegression({
         learningRate: 0.00001,
         epochs: 1000,
         points,

@@ -35,7 +35,7 @@ import { ILinearRegressionOptions, Optimization } from '../interfaces';
  *
  * Usage:
  * ------
- * const model = new SimpleLinearRegression({
+ * const model = new LinearRegression({
  *     learningRate: 0.00001,
  *     epochs: 1000,
  *     points,
@@ -50,7 +50,7 @@ import { ILinearRegressionOptions, Optimization } from '../interfaces';
  * const [m, b] = model.train();
  * const y = model.predict(80);
  */
-export class SimpleLinearRegression {
+export class LinearRegression {
 
     options: ILinearRegressionOptions;
     m: number;
@@ -109,7 +109,28 @@ export class SimpleLinearRegression {
         return [newM, newB];
     }
 
+    private miniBatchGradientDescent(batch: [number, number][]) {
+
+        let mGradientSum = 0;
+        let bGradientSum = 0;
+        const batchSize = batch.length;
+
+        for (const [x, actualValue] of batch) {
+            const predictedValue = this.m * x + this.b;
+            const diff = actualValue - predictedValue;
+            mGradientSum += -2 * x * diff;
+            bGradientSum += -2 * diff;
+        }
+
+        const gradientM = this.m - (this.options.learningRate / batchSize) * mGradientSum;
+        const gradientB = this.b - (this.options.learningRate / batchSize) * bGradientSum;
+
+        return [gradientM, gradientB];
+    }
+
     train() {
+
+        const batchSize = this.options.batchSize ?? this.options.points.length;
 
         for(let i = 0; i < this.options.epochs; i++) {
             switch (this.options.optimization) {
@@ -124,6 +145,31 @@ export class SimpleLinearRegression {
 
                     for (const [x, actualValue] of this.options.points) {
                         const [gradientM, gradientB] = this.stochasticGradientDescent(x, actualValue);
+
+                        if (typeof this.options.epochsCallback === 'function') {
+                            this.options.epochsCallback(i, this.options.epochs, gradientM, gradientB);
+                        }
+
+                        this.m = gradientM;
+                        this.b = gradientB;
+                    }
+
+                    break;
+                }
+
+                case Optimization.MiniBatchGradientDescent: {
+
+                    // Mini Batch Gradient Descent --------------------------------
+
+                    // Shuffle the data for each epoch if needed
+                    if (this.options.shuffle) {
+                        this.shuffle();
+                    }
+
+                    // Split data into mini-batches
+                    for (let j = 0; j < this.options.points.length; j += batchSize) {
+                        const batch = this.options.points.slice(j, j + batchSize);
+                        const [gradientM, gradientB] = this.miniBatchGradientDescent(batch);
 
                         if (typeof this.options.epochsCallback === 'function') {
                             this.options.epochsCallback(i, this.options.epochs, gradientM, gradientB);

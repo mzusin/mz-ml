@@ -35,6 +35,9 @@ const init = () => {
         learningRate: 0.00001,
         epochs: 1000,
         points,
+        optimization: 2,
+        shuffle: true,
+        batchSize: 3,
 
         epochsCallback: (epoch, epochsCount, gradientM, gradientB) => {
             if(epoch % 50 === 0 || epoch === epochsCount) {

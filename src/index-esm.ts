@@ -1,1 +1,1 @@
-export * from './core/simple-linear-regression';
+export * from './core/linear-regression';

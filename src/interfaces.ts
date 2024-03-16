@@ -1,6 +1,7 @@
 export enum Optimization {
     GradientDescent = 0,
     StochasticGradientDescent = 1,
+    MiniBatchGradientDescent = 2,
 }
 
 export interface ILinearRegressionOptions {
@@ -10,4 +11,5 @@ export interface ILinearRegressionOptions {
     epochsCallback?: (epoch: number, epochsCount: number, gradientM: number, gradientB: number) => void;
     optimization?: Optimization;
     shuffle?: boolean;
+    batchSize?: number;
 }

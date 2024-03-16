@@ -1,4 +1,4 @@
-import * as LinearRegression from './core/simple-linear-regression';
+import * as LinearRegression from './core/linear-regression';
 
 const api = {
     ...LinearRegression,
@@ -12,4 +12,4 @@ declare global {
 
 window.mzMl = window.mzMl || api;
 
-export * from './core/simple-linear-regression';
+export * from './core/linear-regression';
