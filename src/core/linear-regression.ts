@@ -69,56 +69,52 @@ export class LinearRegression {
         }
     }
 
-    private gradientDescent() {
-        let mGradientSum = 0;
-        let bGradientSum = 0;
-        const n = this.options.points.length;
-
-        for(let i=0; i<n; i++) {
-            const [x, actualValue] = this.options.points[i];
-            const predictedValue = this.m * x + this.b;
-
-            const diff = (-2/n) * (actualValue - predictedValue);
-
-            // dE/dm = (-2/n) * sum_from_0_to_n(x * (actual_value - (mx + b)))
-            mGradientSum += x * diff;
-
-            // dE/db = (-2/n) * sum_from_0_to_n(actual_value - (mx + b))
-            bGradientSum += diff;
-        }
-
-        // new_m = current_m - learning_rate * dE/dm
-        const gradientM = this.m - this.options.learningRate * mGradientSum;
-
-        // new_b = current_b - learning_rate * dE/db
-        const gradientB = this.b - this.options.learningRate * bGradientSum;
-
-        return [gradientM, gradientB];
-    }
-
-    private miniBatchGradientDescent(batch: [number, number][]) {
+    private gradientDescent(batch: [number, number][]) {
 
         let mGradientSum = 0;
         let bGradientSum = 0;
         const batchSize = batch.length;
 
         for (const [x, actualValue] of batch) {
+
             const predictedValue = this.m * x + this.b;
+
             const diff = actualValue - predictedValue;
+
+            // dE/dm = (-2/n) * sum_from_0_to_n(x * (actual_value - (mx + b)))
             mGradientSum += -2 * x * diff;
+
+            // dE/db = (-2/n) * sum_from_0_to_n(actual_value - (mx + b))
             bGradientSum += -2 * diff;
         }
 
+        // new_m = current_m - learning_rate * dE/dm
         const gradientM = this.m - (this.options.learningRate / batchSize) * mGradientSum;
+
+        // new_b = current_b - learning_rate * dE/db
         const gradientB = this.b - (this.options.learningRate / batchSize) * bGradientSum;
 
         return [gradientM, gradientB];
     }
 
-    train() {
+    private getBatchSize() {
+        switch (this.options.optimization) {
+            case Optimization.StochasticGradientDescent: {
+                return 1;
+            }
 
-        const batchSize = this.options.optimization === Optimization.MiniBatchGradientDescent ?
-                            (this.options.batchSize ?? this.options.points.length) : 1;
+            case Optimization.MiniBatchGradientDescent: {
+                return this.options.batchSize ?? this.options.points.length;
+            }
+
+            default: {
+                return this.options.points.length;
+            }
+        }
+    }
+
+    train() {
+        const batchSize = this.getBatchSize();
 
         for(let i = 0; i < this.options.epochs; i++) {
 
@@ -126,26 +122,11 @@ export class LinearRegression {
                 this.shuffle();
             }
 
-            if(this.options.optimization === Optimization.StochasticGradientDescent ||
-                this.options.optimization === Optimization.MiniBatchGradientDescent) {
+            for (let j = 0; j < this.options.points.length; j += batchSize) {
+                const batch = this.options.points.slice(j, j + batchSize);
+                const [gradientM, gradientB] = this.gradientDescent(batch);
 
-                for (let j = 0; j < this.options.points.length; j += batchSize) {
-                    const batch = this.options.points.slice(j, j + batchSize);
-                    const [gradientM, gradientB] = this.miniBatchGradientDescent(batch);
-
-                    if (typeof this.options.epochsCallback === 'function') {
-                        this.options.epochsCallback(i, this.options.epochs, gradientM, gradientB);
-                    }
-
-                    this.m = gradientM;
-                    this.b = gradientB;
-                }
-            }
-            else{
-                // Simple Gradient Descent -----------------------------------
-                const [gradientM, gradientB] = this.gradientDescent();
-
-                if(!!this.options.epochsCallback && (typeof this.options.epochsCallback === 'function')) {
+                if (typeof this.options.epochsCallback === 'function') {
                     this.options.epochsCallback(i, this.options.epochs, gradientM, gradientB);
                 }
 

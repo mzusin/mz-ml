@@ -23,7 +23,7 @@ declare module 'mz-ml' {
         constructor(options: ILinearRegressionOptions);
         private shuffle;
         private gradientDescent;
-        private miniBatchGradientDescent;
+        private getBatchSize(): number;
         train(): number[];
         predict(x: number): number;
     }
