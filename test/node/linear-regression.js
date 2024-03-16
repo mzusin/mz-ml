@@ -31,7 +31,7 @@ const init = () => {
         points.push([xArr[i], yArr[i]]);
     }
 
-    const regression = new SimpleLinearRegression({
+    const model = new SimpleLinearRegression({
         learningRate: 0.00001,
         epochs: 1000,
         points,
@@ -43,7 +43,7 @@ const init = () => {
         }
     });
 
-    const [m, b] = regression.train();
+    const [m, b] = model.train();
 
     const lineData = [];
 
@@ -66,6 +66,11 @@ const init = () => {
     ];
 
     plot(data);
+
+    console.log('predict 50:', model.predict(50));
+    console.log('predict 100:', model.predict(100));
+    console.log('predict 80:', model.predict(80));
+    console.log('predict 11:', model.predict(11));
 };
 
 init();

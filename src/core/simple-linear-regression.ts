@@ -34,7 +34,8 @@ import { ILinearRegressionOptions } from '../interfaces';
  * new_b = current_b - learning_rate * dE/db
  *
  * Usage:
- * const regression = new SimpleLinearRegression({
+ * ------
+ * const model = new SimpleLinearRegression({
  *     learningRate: 0.00001,
  *     epochs: 1000,
  *     points,
@@ -46,8 +47,8 @@ import { ILinearRegressionOptions } from '../interfaces';
  *     }
  * });
  *
- * const [m, b] = regression.train();
- * const y = regression.predict(80);
+ * const [m, b] = model.train();
+ * const y = model.predict(80);
  */
 export class SimpleLinearRegression {
 
