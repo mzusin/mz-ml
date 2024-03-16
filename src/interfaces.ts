@@ -10,6 +10,6 @@ export interface ILinearRegressionOptions {
     points: [number, number][];
     epochsCallback?: (epoch: number, epochsCount: number, gradientM: number, gradientB: number) => void;
     optimization?: Optimization;
-    shuffle?: boolean;
+    shuffle?: boolean; // shuffle data on each epoch
     batchSize?: number;
 }

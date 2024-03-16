@@ -1,7 +1,7 @@
 import { ILinearRegressionOptions, Optimization } from '../interfaces';
 
 /**
- * Simple Linear Regression
+ * Linear Regression
  *
  * Mean Squared Error (MSE): Error function = Loss function
  * E = (1/n) * sum_from_0_to_n((actual_value - predicted_value)^2)
@@ -96,19 +96,6 @@ export class LinearRegression {
         return [gradientM, gradientB];
     }
 
-    private stochasticGradientDescent(x: number, actualValue: number) {
-        const predictedValue = this.m * x + this.b;
-
-        const diff = actualValue - predictedValue;
-        const gradientM = -2 * x * diff;
-        const gradientB = -2 * diff;
-
-        const newM = this.m - this.options.learningRate * gradientM;
-        const newB = this.b - this.options.learningRate * gradientB;
-
-        return [newM, newB];
-    }
-
     private miniBatchGradientDescent(batch: [number, number][]) {
 
         let mGradientSum = 0;
@@ -130,71 +117,40 @@ export class LinearRegression {
 
     train() {
 
-        const batchSize = this.options.batchSize ?? this.options.points.length;
+        const batchSize = this.options.optimization === Optimization.MiniBatchGradientDescent ?
+                            (this.options.batchSize ?? this.options.points.length) : 1;
 
         for(let i = 0; i < this.options.epochs; i++) {
-            switch (this.options.optimization) {
-                case Optimization.StochasticGradientDescent: {
 
-                    // Stochastic Gradient Descent -------------------------------
+            if (this.options.shuffle) {
+                this.shuffle();
+            }
 
-                    // Shuffle the data for each epoch if needed
-                    if (this.options.shuffle) {
-                        this.shuffle();
-                    }
+            if(this.options.optimization === Optimization.StochasticGradientDescent ||
+                this.options.optimization === Optimization.MiniBatchGradientDescent) {
 
-                    for (const [x, actualValue] of this.options.points) {
-                        const [gradientM, gradientB] = this.stochasticGradientDescent(x, actualValue);
+                for (let j = 0; j < this.options.points.length; j += batchSize) {
+                    const batch = this.options.points.slice(j, j + batchSize);
+                    const [gradientM, gradientB] = this.miniBatchGradientDescent(batch);
 
-                        if (typeof this.options.epochsCallback === 'function') {
-                            this.options.epochsCallback(i, this.options.epochs, gradientM, gradientB);
-                        }
-
-                        this.m = gradientM;
-                        this.b = gradientB;
-                    }
-
-                    break;
-                }
-
-                case Optimization.MiniBatchGradientDescent: {
-
-                    // Mini Batch Gradient Descent --------------------------------
-
-                    // Shuffle the data for each epoch if needed
-                    if (this.options.shuffle) {
-                        this.shuffle();
-                    }
-
-                    // Split data into mini-batches
-                    for (let j = 0; j < this.options.points.length; j += batchSize) {
-                        const batch = this.options.points.slice(j, j + batchSize);
-                        const [gradientM, gradientB] = this.miniBatchGradientDescent(batch);
-
-                        if (typeof this.options.epochsCallback === 'function') {
-                            this.options.epochsCallback(i, this.options.epochs, gradientM, gradientB);
-                        }
-
-                        this.m = gradientM;
-                        this.b = gradientB;
-                    }
-
-                    break;
-                }
-
-                default: {
-                    // Simple Gradient Descent -----------------------------------
-                    const [gradientM, gradientB] = this.gradientDescent(this.m, this.b);
-
-                    if(!!this.options.epochsCallback && (typeof this.options.epochsCallback === 'function')) {
+                    if (typeof this.options.epochsCallback === 'function') {
                         this.options.epochsCallback(i, this.options.epochs, gradientM, gradientB);
                     }
 
                     this.m = gradientM;
                     this.b = gradientB;
-
-                    break;
                 }
+            }
+            else{
+                // Simple Gradient Descent -----------------------------------
+                const [gradientM, gradientB] = this.gradientDescent(this.m, this.b);
+
+                if(!!this.options.epochsCallback && (typeof this.options.epochsCallback === 'function')) {
+                    this.options.epochsCallback(i, this.options.epochs, gradientM, gradientB);
+                }
+
+                this.m = gradientM;
+                this.b = gradientB;
             }
         }
 

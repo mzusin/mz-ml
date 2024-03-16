@@ -1,5 +1,3 @@
-import { ILinearRegressionOptions } from '../types/interfaces';
-
 declare module 'mz-ml' {
 
     export enum Optimization {

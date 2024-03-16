@@ -9,25 +9,48 @@ for(let i=0; i<xArr.length; i++) {
     points.push([xArr[i], yArr[i]]);
 }
 
-describe('Simple Linear Regression', () => {
+describe('Linear Regression', () => {
 
-    test('Learning rate 0.00001', () => {
+    test('GD with learning rate 0.00001', () => {
 
         const regression = new LinearRegression({
             learningRate: 0.00001,
             epochs: 1000,
             points,
-
-            /*epochsCallback: (epoch, epochsCount, gradientM, gradientB) => {
-                if(epoch % 50 === 0 || epoch === epochsCount) {
-                    console.log(`epochs: ${ epoch } / ${ epochsCount }, m = ${ gradientM }, b = ${ gradientB }`);
-                }
-            }*/
         });
 
         const [m, b] = regression.train();
 
         expect([m, b]).toStrictEqual([0.7492312657204566, 0.17408378352957618]);
+    });
+
+    test('SGD with learning rate 0.00001', () => {
+
+        const regression = new LinearRegression({
+            learningRate: 0.00001,
+            epochs: 1000,
+            points,
+            optimization: 1,
+        });
+
+        const [m, b] = regression.train();
+
+        expect([m, b]).toStrictEqual([0.6381096434369923, 13.13201182243643]);
+    });
+
+    test('Mini-Batch with learning rate 0.00001 and batch size = 3', () => {
+
+        const regression = new LinearRegression({
+            learningRate: 0.00001,
+            epochs: 1000,
+            points,
+            optimization: 2,
+            batchSize: 2,
+        });
+
+        const [m, b] = regression.train();
+
+        expect([m, b]).toStrictEqual([0.7558520339174016, 7.271072855627577]);
     });
 
     /*test('Learning rate 0.01', () => {
