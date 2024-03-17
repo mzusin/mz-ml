@@ -1,4 +1,4 @@
-import { ILinearRegressionOptions, Optimization } from '../interfaces';
+import { ILinearRegressionOptions } from '../interfaces';
 
 /**
  * Linear Regression
@@ -33,6 +33,11 @@ import { ILinearRegressionOptions, Optimization } from '../interfaces';
  * new_m = current_m - learning_rate * dE/dm
  * new_b = current_b - learning_rate * dE/db
  *
+ * General Form:
+ * ------------
+ * y = w1*x1 + w2*x2 + … + wn*xn + b
+ * [w1, ..., wn] = weights, b = bias
+ *
  * Usage:
  * ------
  * const model = new LinearRegression({
@@ -53,93 +58,133 @@ import { ILinearRegressionOptions, Optimization } from '../interfaces';
 export class LinearRegression {
 
     options: ILinearRegressionOptions;
-    m: number;
-    b: number;
+    weights: number[];
+    bias: number;
+
+    features: number[][];
+    labels: number[];
+    n: number;
+
+    batchSize: number;
 
     constructor(options: ILinearRegressionOptions) {
         this.options = options;
-        this.options.points = [...this.options.points];
-        this.m = 0;
-        this.b = 0;
+
+        this.features = [...this.options.features];
+        this.labels = [...this.options.labels];
+        this.n = this.features.length > 0 ? this.features[0].length : 0;
+
+        // TODO: validate that features count === labels count
+
+        // Initialize weights to zero
+        this.weights = LinearRegression.initZeroArray(this.n);
+        this.weights.length = this.n;
+        this.weights.fill(0);
+
+        this.bias = 0;
+
+        this.batchSize = this.options.batchSize ?? this.features.length;
     }
 
-    private shuffle() {
+    private static initZeroArray(len: number) {
+        const arr: number[] = [];
+        arr.length = len;
+        arr.fill(0);
+        return arr;
+    }
+
+    // TODO: shuffle
+    /*private shuffle() {
         for (let i = this.options.points.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [this.options.points[i], this.options.points[j]] = [this.options.points[j], this.options.points[i]];
         }
-    }
+    }*/
 
-    private gradientDescent(batch: [number, number][]) {
+    private gradientDescent(batchFeatures: number[][], batchLabels: number[]) : [ number[], number ] {
 
-        let mGradientSum = 0;
+        const mGradientSums = LinearRegression.initZeroArray(this.n);
         let bGradientSum = 0;
-        const batchSize = batch.length;
 
-        for (const [x, actualValue] of batch) {
+        for (let i = 0; i < batchFeatures.length; i++) {
 
-            const predictedValue = this.m * x + this.b;
+            const _features: number[] = batchFeatures[i];
 
+            const actualValue = batchLabels[i];
+            const predictedValue = this.predict(_features);
             const diff = actualValue - predictedValue;
 
             // dE/dm = (-2/n) * sum_from_0_to_n(x * (actual_value - (mx + b)))
-            mGradientSum += -2 * x * diff;
+            for (let j = 0; j < this.n; j++) {
+                mGradientSums[j] += -2 * _features[j] * diff;
+            }
 
             // dE/db = (-2/n) * sum_from_0_to_n(actual_value - (mx + b))
             bGradientSum += -2 * diff;
         }
 
-        // new_m = current_m - learning_rate * dE/dm
-        const gradientM = this.m - (this.options.learningRate / batchSize) * mGradientSum;
+        // Update weights and bias using learning rate
+        const newWeights = [];
+
+        for(let i=0; i<this.weights.length; i++) {
+            const _weight = this.weights[i];
+
+            // new_m = current_m - learning_rate * dE/dm
+            const gradientM = _weight - (this.options.learningRate / this.batchSize) * mGradientSums[i];
+            newWeights.push(gradientM);
+        }
 
         // new_b = current_b - learning_rate * dE/db
-        const gradientB = this.b - (this.options.learningRate / batchSize) * bGradientSum;
+        const newBias = this.bias - (this.options.learningRate / this.batchSize) * bGradientSum;
 
-        return [gradientM, gradientB];
-    }
-
-    private getBatchSize() {
-        switch (this.options.optimization) {
-            case Optimization.StochasticGradientDescent: {
-                return 1;
-            }
-
-            case Optimization.MiniBatchGradientDescent: {
-                return this.options.batchSize ?? this.options.points.length;
-            }
-
-            default: {
-                return this.options.points.length;
-            }
-        }
+        return [newWeights, newBias];
     }
 
     train() {
-        const batchSize = this.getBatchSize();
-
         for(let i = 0; i < this.options.epochs; i++) {
 
-            if (this.options.shuffle) {
+            // TODO: shuffle
+            /*if (this.options.shuffle) {
                 this.shuffle();
-            }
+            }*/
 
-            for (let j = 0; j < this.options.points.length; j += batchSize) {
-                const batch = this.options.points.slice(j, j + batchSize);
-                const [gradientM, gradientB] = this.gradientDescent(batch);
+            // Split data into mini-batches
+            for (let j = 0; j < this.features.length; j += this.batchSize) {
+
+                const batchFeatures = this.features.slice(j, j + this.batchSize);
+                const batchLabels = this.labels.slice(j, j + this.batchSize);
+
+                const [newWeights, newBias] = this.gradientDescent(batchFeatures, batchLabels);
 
                 if (typeof this.options.epochsCallback === 'function') {
-                    this.options.epochsCallback(i, this.options.epochs, gradientM, gradientB);
+                    this.options.epochsCallback(i, this.options.epochs, newWeights, newBias);
                 }
 
-                this.m = gradientM;
-                this.b = gradientB;
+                this.weights = newWeights;
+                this.bias = newBias;
             }
         }
 
-        return [this.m, this.b];
+        return [this.weights, this.bias];
     }
 
-    predict(x: number) {
-        return this.m * x + this.b;
+    /**
+     * y = w1*x1 + w2*x2 + … + wn*xn + b
+     */
+    predict(features: number[]) {
+
+        if (features.length !== this.weights.length) {
+            throw new Error('Number of features does not match the number of weights.');
+        }
+
+        // Calculate the dot product of features and weights and add bias
+        // return this.m * x + this.b;
+        let prediction = this.bias;
+
+        for (let i = 0; i < features.length; i++) {
+            prediction += features[i] * this.weights[i];
+        }
+
+        return prediction;
     }
 }
