@@ -1,30 +1,28 @@
 declare module 'mz-ml' {
 
-    export enum Optimization {
-        GradientDescent = 0,
-        StochasticGradientDescent = 1,
-        MiniBatchGradientDescent = 2
-    }
-
     export interface ILinearRegressionOptions {
+        features: number[][];
+        labels: number[];
         learningRate: number;
         epochs: number;
-        points: [number, number][];
-        epochsCallback?: (epoch: number, epochsCount: number, gradientM: number, gradientB: number) => void;
-        optimization?: Optimization;
+        epochsCallback?: (epoch: number, epochsCount: number, newWeights: number[], newBias: number) => void;
         shuffle?: boolean;
         batchSize?: number;
     }
 
     export class LinearRegression {
         options: ILinearRegressionOptions;
-        m: number;
-        b: number;
+        weights: number[];
+        bias: number;
+        features: number[][];
+        labels: number[];
+        n: number;
+        batchSize: number;
         constructor(options: ILinearRegressionOptions);
+        private static initZeroArray;
         private shuffle;
         private gradientDescent;
-        private getBatchSize(): number;
-        train(): number[];
-        predict(x: number): number;
+        train(): (number | number[])[];
+        predict(features: number[]): number;
     }
 }

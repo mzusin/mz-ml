@@ -1,9 +1,3 @@
-export enum Optimization {
-    GradientDescent = 0,
-    StochasticGradientDescent = 1,
-    MiniBatchGradientDescent = 2,
-}
-
 export interface ILinearRegressionOptions {
     features: number[][];
     labels: number[];

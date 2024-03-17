@@ -101,6 +101,25 @@ export class LinearRegression {
         }
     }*/
 
+    private shuffle() {
+        // const indices = Array.from({ length: features.length }, (_, index) => index);
+
+        const indices: number[] = [];
+        for(let i=0; i<this.n; i++) {
+            indices.push(i);
+        }
+
+        for (let i = this.features.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+
+        for (let i = this.features.length - 1; i > 0; i--) {
+            [this.features[i], this.features[indices[i]]] = [this.features[indices[i]], this.features[i]];
+            [this.labels[i], this.labels[indices[i]]] = [this.labels[indices[i]], this.labels[i]];
+        }
+    }
+
     private gradientDescent(batchFeatures: number[][], batchLabels: number[]) : [ number[], number ] {
 
         const mGradientSums = LinearRegression.initZeroArray(this.n);
@@ -143,10 +162,9 @@ export class LinearRegression {
     train() {
         for(let i = 0; i < this.options.epochs; i++) {
 
-            // TODO: shuffle
-            /*if (this.options.shuffle) {
+            if (this.options.shuffle) {
                 this.shuffle();
-            }*/
+            }
 
             // Split data into mini-batches
             for (let j = 0; j < this.features.length; j += this.batchSize) {
