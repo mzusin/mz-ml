@@ -229,4 +229,29 @@ export class LinearRegression {
 
         return 1 - (residualSumOfSquares / totalSumOfSquares);
     }
+
+    /**
+     * MSE = (1/n) * sum_from_0_to_n((actual_value - (mx + b))^2)
+     * The ideal value of Mean Squared Error (MSE) is 0.
+     * Achieving an MSE of 0 would mean that the model perfectly predicts the target variable
+     * for every data point in the training set. However, it's important to note
+     * that achieving an MSE of exactly 0 is extremely rare and often unrealistic, especially with real-world data.
+     */
+    meanSquaredError() {
+        if(this.features.length <= 0) return 0;
+
+        let mse = 0;
+
+        for (let i = 0; i < this.features.length; i++) {
+            const actualValue = this.labels[i];
+            const predictedValue = this.predict(this.features[i]);
+
+            mse += (actualValue - predictedValue) ** 2;
+        }
+
+        mse /= this.features.length;
+
+        return mse;
+    }
+
 }

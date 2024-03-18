@@ -25,5 +25,6 @@ declare module 'mz-ml' {
         train(): (number | number[])[];
         predict(features: number[]): number;
         rSquared(): number;
+        meanSquaredError(): number;
     }
 }
