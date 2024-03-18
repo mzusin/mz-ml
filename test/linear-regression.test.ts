@@ -20,6 +20,7 @@ describe('Linear Regression', () => {
         expect([weights, bias]).toStrictEqual([[0.7492312657204566], 0.17408378352957618]);
         expect(model.rSquared()).toStrictEqual(0.16455829885857165);
         expect(model.meanSquaredError()).toStrictEqual(1973.4980142561762);
+        expect(model.pearson()).toStrictEqual([0.5429934671731338]);
     });
 
     test('SGD with learning rate 0.00001', () => {
@@ -37,6 +38,7 @@ describe('Linear Regression', () => {
         expect([weights, bias]).toStrictEqual([[0.6381096434369923], 13.13201182243643]);
         expect(model.rSquared()).toStrictEqual(0.2393979741060026);
         expect(model.meanSquaredError()).toStrictEqual(1796.7101542695473);
+        expect(model.pearson()).toStrictEqual([0.5429934671731338]);
     });
 
     test('Mini-Batch with learning rate 0.00001 and batch size = 3', () => {
@@ -54,6 +56,7 @@ describe('Linear Regression', () => {
         expect([weights, bias]).toStrictEqual([[0.7558520339174016], 7.271072855627577]);
         expect(model.rSquared()).toStrictEqual(0.18940279995876763);
         expect(model.meanSquaredError()).toStrictEqual(1914.8098095383202);
+        expect(model.pearson()).toStrictEqual([0.5429934671731338]);
     });
 
     test('Mini-Batch 2', () => {
@@ -74,6 +77,7 @@ describe('Linear Regression', () => {
         expect([weights, bias]).toStrictEqual([[0.4855781005489537], 0.8483783596443771]);
         expect(model.predict([17])).toStrictEqual(9.10320606897659);
         expect(model.meanSquaredError()).toStrictEqual(2448.271726544987);
+        expect(model.pearson()).toStrictEqual([-0.6527089229997943]);
     });
 
     /*test('Learning rate 0.01', () => {

@@ -37,23 +37,6 @@ import { ILinearRegressionOptions } from '../interfaces';
  * ------------
  * y = w1*x1 + w2*x2 + … + wn*xn + b
  * [w1, ..., wn] = weights, b = bias
- *
- * Usage:
- * ------
- * const model = new LinearRegression({
- *     learningRate: 0.00001,
- *     epochs: 1000,
- *     points,
- *
- *     epochsCallback: (epoch, epochsCount, gradientM, gradientB) => {
- *         if(epoch % 50 === 0 || epoch === epochsCount) {
- *             console.log(`epochs: ${ epoch } / ${ epochsCount }, m = ${ gradientM }, b = ${ gradientB }`);
- *         }
- *     }
- * });
- *
- * const [m, b] = model.train();
- * const y = model.predict(80);
  */
 export class LinearRegression {
 
@@ -74,8 +57,6 @@ export class LinearRegression {
         this.labels = [...this.options.labels];
         this.n = this.features.length > 0 ? this.features[0].length : 0;
 
-        // TODO: validate that features count === labels count
-
         // Initialize weights to zero
         this.weights = LinearRegression.initZeroArray(this.n);
         this.weights.length = this.n;
@@ -94,8 +75,6 @@ export class LinearRegression {
     }
 
     private shuffle() {
-        // const indices = Array.from({ length: features.length }, (_, index) => index);
-
         const indices: number[] = [];
         for(let i=0; i<this.n; i++) {
             indices.push(i);
@@ -252,6 +231,51 @@ export class LinearRegression {
         mse /= this.features.length;
 
         return mse;
+    }
+
+    /**
+     * Compute the Pearson correlation coefficient.
+     * --------------------------------------------
+     * It is a statistical measure that quantifies the strength and direction of the linear relationship
+     * between two variables. It's commonly used to assess the strength of association
+     * between two continuous variables.
+     *
+     * Range [-1, 1]
+     * r=1 indicates a perfect positive linear relationship,
+     *      meaning that as one variable increases, the other variable increases proportionally.
+     *
+     * r=−1 indicates a perfect negative linear relationship, meaning that as one variable increases,
+     *      the other variable decreases proportionally.
+     *
+     * r= 0 indicates no linear relationship between the variables.
+     */
+    pearson = () : number[] => {
+        if (this.features.length <= 0 || this.labels.length <= 0) return [];
+
+        const pearsonCoefficients: number[] = [];
+        const yMean = this.labels.reduce((sum, y) => sum + y, 0) / this.labels.length;
+
+        for (let featureIndex = 0; featureIndex < this.n; featureIndex++) {
+            let sumXY = 0; // Sum of the product of (x - xMean) and (y - yMean)
+            let sumX2 = 0; // Sum of squared differences between x and xMean
+            let sumY2 = 0; // Sum of squared differences between y and yMean
+
+            const xValues = this.features.map(feature => feature[featureIndex]);
+            const xMean = xValues.reduce((sum, x) => sum + x, 0) / xValues.length;
+
+            for (let i = 0; i < this.features.length; i++) {
+                const x = this.features[i][featureIndex];
+                const y = this.labels[i];
+
+                sumXY += (x - xMean) * (y - yMean);
+                sumX2 += (x - xMean) ** 2;
+                sumY2 += (y - yMean) ** 2;
+            }
+
+            pearsonCoefficients.push((sumX2 === 0 || sumY2 === 0) ? 0 : (sumXY / Math.sqrt(sumX2 * sumY2)));
+        }
+
+        return pearsonCoefficients;
     }
 
 }

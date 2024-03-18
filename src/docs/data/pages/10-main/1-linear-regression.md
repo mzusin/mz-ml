@@ -22,4 +22,7 @@ const prediction = model.predict([17]); // 89
 const r2 = model.rSquared(); // 0.4
 
 const mse = model.meanSquaredError(); // 85.4980142561762
+
+// Pearson correlation coefficient
+const pearson = model.pearson(); // 0.5429934671731338
 ```

@@ -26,5 +26,6 @@ declare module 'mz-ml' {
         predict(features: number[]): number;
         rSquared(): number;
         meanSquaredError(): number;
+        pearson: () => number[];
     }
 }

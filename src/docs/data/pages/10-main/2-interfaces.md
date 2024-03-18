@@ -33,5 +33,6 @@ export class LinearRegression {
     // Statistics
     rSquared(): number;
     meanSquaredError(): number;
+    pearson: () => number[];
 }
 ```
