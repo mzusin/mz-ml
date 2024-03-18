@@ -30,9 +30,9 @@ describe('Linear Regression', () => {
             batchSize: 1,
         });
 
-        const [m, b] = regression.train();
+        const [weights, bias] = regression.train();
 
-        expect([m, b]).toStrictEqual([[0.6381096434369923], 13.13201182243643]);
+        expect([weights, bias]).toStrictEqual([[0.6381096434369923], 13.13201182243643]);
     });
 
     test('Mini-Batch with learning rate 0.00001 and batch size = 3', () => {
@@ -45,9 +45,28 @@ describe('Linear Regression', () => {
             batchSize: 2,
         });
 
-        const [m, b] = regression.train();
+        const [weights, bias] = regression.train();
 
-        expect([m, b]).toStrictEqual([[0.7558520339174016], 7.271072855627577]);
+        expect([weights, bias]).toStrictEqual([[0.7558520339174016], 7.271072855627577]);
+    });
+
+    test('Mini-Batch 2', () => {
+
+        const features = [[17], [170], [80]];
+        const labels = [91, 66, 58];
+
+        const regression = new LinearRegression({
+            learningRate: 0.00001,
+            epochs: 1000,
+            features,
+            labels,
+            batchSize: 2,
+        });
+
+        const [weights, bias] = regression.train();
+
+        expect([weights, bias]).toStrictEqual([[0.4855781005489537], 0.8483783596443771]);
+        expect(regression.predict([17])).toStrictEqual(9.10320606897659);
     });
 
     /*test('Learning rate 0.01', () => {
@@ -58,8 +77,8 @@ describe('Linear Regression', () => {
             points,
         });
 
-        const [m, b] = regression.train();
+        const [weights, bias] = regression.train();
 
-        expect([m, b]).toStrictEqual([0.7492312657204566, 0.17408378352957618]);
+        expect([weights, bias]).toStrictEqual([0.7492312657204566, 0.17408378352957618]);
     });*/
 });
