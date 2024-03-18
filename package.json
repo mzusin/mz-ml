@@ -32,7 +32,8 @@
   },
   "type": "module",
   "keywords": [
-    "ml"
+    "ml",
+    "linear-regression"
   ],
   "author": "Miriam Zusin <miriam.zusin@gmail.com>",
   "license": "MIT",
