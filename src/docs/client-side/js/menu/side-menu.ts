@@ -84,6 +84,7 @@ export const initMenuCollapsible = () => {
     const $titles = document.querySelectorAll('.side-menu [data-collapsible-title]') as NodeListOf<HTMLElement>;
 
     for(const $title of $titles){
+
         $title.addEventListener('click', () => {
             const isOpened = $title.getAttribute('data-opened') === 'true';
             toggle($title, !isOpened, true);
