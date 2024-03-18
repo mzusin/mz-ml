@@ -8,21 +8,22 @@ describe('Linear Regression', () => {
 
     test('GD with learning rate 0.00001', () => {
 
-        const regression = new LinearRegression({
+        const model = new LinearRegression({
             learningRate: 0.00001,
             epochs: 1000,
             features,
             labels,
         });
 
-        const [weights, bias] = regression.train();
+        const [weights, bias] = model.train();
 
         expect([weights, bias]).toStrictEqual([[0.7492312657204566], 0.17408378352957618]);
+        expect(model.rSquared()).toStrictEqual(0.16455829885857165);
     });
 
     test('SGD with learning rate 0.00001', () => {
 
-        const regression = new LinearRegression({
+        const model = new LinearRegression({
             learningRate: 0.00001,
             epochs: 1000,
             features,
@@ -30,14 +31,15 @@ describe('Linear Regression', () => {
             batchSize: 1,
         });
 
-        const [weights, bias] = regression.train();
+        const [weights, bias] = model.train();
 
         expect([weights, bias]).toStrictEqual([[0.6381096434369923], 13.13201182243643]);
+        expect(model.rSquared()).toStrictEqual(0.2393979741060026);
     });
 
     test('Mini-Batch with learning rate 0.00001 and batch size = 3', () => {
 
-        const regression = new LinearRegression({
+        const model = new LinearRegression({
             learningRate: 0.00001,
             epochs: 1000,
             features,
@@ -45,9 +47,10 @@ describe('Linear Regression', () => {
             batchSize: 2,
         });
 
-        const [weights, bias] = regression.train();
+        const [weights, bias] = model.train();
 
         expect([weights, bias]).toStrictEqual([[0.7558520339174016], 7.271072855627577]);
+        expect(model.rSquared()).toStrictEqual(0.18940279995876763);
     });
 
     test('Mini-Batch 2', () => {
@@ -71,13 +74,13 @@ describe('Linear Regression', () => {
 
     /*test('Learning rate 0.01', () => {
 
-        const regression = new LinearRegression({
+        const model = new LinearRegression({
             learningRate: 0.01,
             epochs: 1000,
             points,
         });
 
-        const [weights, bias] = regression.train();
+        const [weights, bias] = model.train();
 
         expect([weights, bias]).toStrictEqual([0.7492312657204566, 0.17408378352957618]);
     });*/

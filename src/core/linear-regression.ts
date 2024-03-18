@@ -93,14 +93,6 @@ export class LinearRegression {
         return arr;
     }
 
-    // TODO: shuffle
-    /*private shuffle() {
-        for (let i = this.options.points.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [this.options.points[i], this.options.points[j]] = [this.options.points[j], this.options.points[i]];
-        }
-    }*/
-
     private shuffle() {
         // const indices = Array.from({ length: features.length }, (_, index) => index);
 
@@ -204,5 +196,37 @@ export class LinearRegression {
         }
 
         return prediction;
+    }
+
+    /**
+     * R-squared is the coefficient of determination value,
+     * which measures the goodness of fit of the regression line to the data.
+     * A value close to 1 indicates a perfect fit.
+     * R-Squared range: [0, 1]
+     *
+     * Formula:
+     * --------
+     * R^2 = 1 - (residualSumOfSquares / totalSumOfSquares)
+     * RSS (Residual Sum of Squares) is the sum of squared differences
+     *      between the actual and predicted values
+     * TSS (Total Sum of Squares) is the sum of squared differences between
+     *      the actual values and the mean of the actual values
+     */
+    rSquared() {
+        let residualSumOfSquares = 0; // rss
+        let totalSumOfSquares = 0; // tss
+
+        const meanOfActualValues = this.labels.length <= 0 ? 0 :
+            this.labels.reduce((sum, x) => sum + x) / this.labels.length; // yMean
+
+        for (let i = 0; i < this.features.length; i++) {
+            const actualValue = this.labels[i];
+            const predictedValue = this.predict(this.features[i]);
+
+            residualSumOfSquares += (actualValue - predictedValue) ** 2;
+            totalSumOfSquares += (actualValue - meanOfActualValues) ** 2;
+        }
+
+        return 1 - (residualSumOfSquares / totalSumOfSquares);
     }
 }

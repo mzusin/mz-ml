@@ -24,5 +24,6 @@ declare module 'mz-ml' {
         private gradientDescent;
         train(): (number | number[])[];
         predict(features: number[]): number;
+        rSquared(): number;
     }
 }

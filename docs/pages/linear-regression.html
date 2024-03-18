@@ -16,8 +16,8 @@
   <link id="favicon-32" rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32.png" />
   <link id="favicon-16" rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16.png" />
 
-  <link rel="stylesheet" href="/css/styles.1710756436956.css" />
-  <!--<link rel="stylesheet" href="/js/index.1710756436956.css" />-->
+  <link rel="stylesheet" href="/css/styles.1710760390931.css" />
+  <!--<link rel="stylesheet" href="/js/index.1710760390931.css" />-->
 
 </head>
 <body class="h-screen flex flex-col font-roboto bg-white dark:bg-slate-900 dark:text-slate-100">
@@ -136,8 +136,11 @@
     <span class="hljs-attr">batchSize</span>: <span class="hljs-number">2</span>, <span class="hljs-comment">// optional</span>
 });
 
-<span class="hljs-keyword">const</span> [weights, bias] = regression.<span class="hljs-title function_">train</span>(); <span class="hljs-comment">// [[0.4855781005489537], 0.8483783596443771]</span>
-<span class="hljs-keyword">const</span> prediction = regression.<span class="hljs-title function_">predict</span>([<span class="hljs-number">17</span>]); <span class="hljs-comment">// 89</span></code></pre>
+<span class="hljs-keyword">const</span> [weights, bias] = model.<span class="hljs-title function_">train</span>(); <span class="hljs-comment">// [[0.4855781005489537], 0.8483783596443771]</span>
+<span class="hljs-keyword">const</span> prediction = model.<span class="hljs-title function_">predict</span>([<span class="hljs-number">17</span>]); <span class="hljs-comment">// 89</span>
+
+<span class="hljs-comment">// The coefficient of determination R-Squared</span>
+<span class="hljs-keyword">const</span> r2 = model.<span class="hljs-title function_">rSquared</span>(); <span class="hljs-comment">// 0.4</span></code></pre>
 </div>
 
       <div class="w-800 max-w-full mx-auto grid  gap-8 items-center text-slate-500"></div>
@@ -152,6 +155,6 @@
   </div>
 </footer>-->
 
-<script src="/js/index.1710756436956.js"></script>
+<script src="/js/index.1710760390931.js"></script>
 </body>
 </html>
