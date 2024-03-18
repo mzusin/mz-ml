@@ -1,2 +1,3 @@
 https://ml.mzsoft.org
 https://ml.mzsoft.org/pages/linear-regression.html
+https://ml.mzsoft.org/pages/interfaces.html
