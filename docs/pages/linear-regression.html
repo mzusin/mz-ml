@@ -16,8 +16,8 @@
   <link id="favicon-32" rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32.png" />
   <link id="favicon-16" rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16.png" />
 
-  <link rel="stylesheet" href="/css/styles.1710756136549.css" />
-  <!--<link rel="stylesheet" href="/js/index.1710756136549.css" />-->
+  <link rel="stylesheet" href="/css/styles.1710756436956.css" />
+  <!--<link rel="stylesheet" href="/js/index.1710756436956.css" />-->
 
 </head>
 <body class="h-screen flex flex-col font-roboto bg-white dark:bg-slate-900 dark:text-slate-100">
@@ -124,6 +124,7 @@
       <div class="w-800 max-w-full mx-auto my-10 leading-7 text-lg text-slate-800 dark:text-slate-200"><h1 class="text-3xl mb-8">Linear Regression</h1>
 <pre class="hljs p-4 mb-4 rounded-md shadow-xl overflow-auto whitespace-pre-wrap text-base"><code><span class="hljs-keyword">import</span> { <span class="hljs-title class_">LinearRegression</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;mz-ml&#x27;</span>;
 
+<span class="hljs-comment">// feature can be of any dimension</span>
 <span class="hljs-keyword">const</span> features = [[<span class="hljs-number">17</span>], [<span class="hljs-number">170</span>], [<span class="hljs-number">80</span>]];
 <span class="hljs-keyword">const</span> labels = [<span class="hljs-number">91</span>, <span class="hljs-number">66</span>, <span class="hljs-number">58</span>];
 
@@ -132,11 +133,11 @@
     <span class="hljs-attr">epochs</span>: <span class="hljs-number">1000</span>,
     features,
     labels,
-    <span class="hljs-attr">batchSize</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attr">batchSize</span>: <span class="hljs-number">2</span>, <span class="hljs-comment">// optional</span>
 });
 
 <span class="hljs-keyword">const</span> [weights, bias] = regression.<span class="hljs-title function_">train</span>(); <span class="hljs-comment">// [[0.4855781005489537], 0.8483783596443771]</span>
-<span class="hljs-keyword">const</span> prediction = regression.<span class="hljs-title function_">predict</span>([<span class="hljs-number">17</span>]);</code></pre>
+<span class="hljs-keyword">const</span> prediction = regression.<span class="hljs-title function_">predict</span>([<span class="hljs-number">17</span>]); <span class="hljs-comment">// 89</span></code></pre>
 </div>
 
       <div class="w-800 max-w-full mx-auto grid  gap-8 items-center text-slate-500"></div>
@@ -151,6 +152,6 @@
   </div>
 </footer>-->
 
-<script src="/js/index.1710756136549.js"></script>
+<script src="/js/index.1710756436956.js"></script>
 </body>
 </html>

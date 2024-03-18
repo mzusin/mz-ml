@@ -3,6 +3,7 @@
 ```js
 import { LinearRegression } from 'mz-ml';
 
+// feature can be of any dimension
 const features = [[17], [170], [80]];
 const labels = [91, 66, 58];
 
@@ -11,10 +12,10 @@ const regression = new LinearRegression({
     epochs: 1000,
     features,
     labels,
-    batchSize: 2,
+    batchSize: 2, // optional
 });
 
 const [weights, bias] = regression.train(); // [[0.4855781005489537], 0.8483783596443771]
-const prediction = regression.predict([17]);
+const prediction = regression.predict([17]); // 89
 
 ```
