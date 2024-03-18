@@ -69,7 +69,7 @@ export const updateReadmeDocs = (websiteUrl, rootPath, sideMenuMap, pagesConfig)
     }
   }
 
-  md += `${ DOCS_END }\n`;
+  md += `${ DOCS_END }`;
 
   // replace the value in readme
   const regex = new RegExp(`${ DOCS_START }([\\s\\S]*)${ DOCS_END }`, 'gim');
