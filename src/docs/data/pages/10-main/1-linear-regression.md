@@ -17,6 +17,7 @@ const regression = new LinearRegression({
 
 const [weights, bias] = model.fit(); // [[0.4855781005489537], 0.8483783596443771]
 const prediction = model.predict([17]); // 89
+const predictions = model.predictBatch([[17], [170]]); // [12.91101530077734, 127.54339895600721]
 
 // The coefficient of determination R-Squared
 const r2 = model.rSquared(); // 0.4

@@ -12,18 +12,26 @@ declare module 'mz-ml' {
 
     export class LinearRegression {
         options: ILinearRegressionOptions;
-        weights: number[];
-        bias: number;
-        features: number[][];
-        labels: number[];
+
         n: number;
         batchSize: number;
+        weights: number[];
+        bias: number;
+
+        features: number[][];
+        labels: number[];
+
         constructor(options: ILinearRegressionOptions);
+
         private static initZeroArray;
         private shuffle;
         private gradientDescent;
+
         fit(): (number | number[])[];
         predict(features: number[]): number;
+        predictBatch(featuresBatch: number[][]): number[];
+
+        // Statistics
         rSquared(): number;
         meanSquaredError(): number;
         pearson: () => number[];

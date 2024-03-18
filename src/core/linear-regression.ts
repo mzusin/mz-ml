@@ -160,7 +160,7 @@ export class LinearRegression {
     /**
      * y = w1*x1 + w2*x2 + … + wn*xn + b
      */
-    predict(features: number[]) {
+    predict(features: number[]) : number {
 
         if (features.length !== this.weights.length) {
             throw new Error('Number of features does not match the number of weights.');
@@ -175,6 +175,16 @@ export class LinearRegression {
         }
 
         return prediction;
+    }
+
+    predictBatch(featuresBatch: number[][]) : number[] {
+        const predictions: number[] = [];
+
+        for(const batch of featuresBatch) {
+            predictions.push(this.predict(batch));
+        }
+
+        return predictions;
     }
 
     /**

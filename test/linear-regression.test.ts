@@ -18,6 +18,8 @@ describe('Linear Regression', () => {
         const [weights, bias] = model.fit();
 
         expect([weights, bias]).toStrictEqual([[0.7492312657204566], 0.17408378352957618]);
+        expect(model.predict([17])).toStrictEqual(12.91101530077734);
+        expect(model.predictBatch([[17], [170]])).toStrictEqual([12.91101530077734, 127.54339895600721]);
         expect(model.rSquared()).toStrictEqual(0.16455829885857165);
         expect(model.meanSquaredError()).toStrictEqual(1973.4980142561762);
         expect(model.pearson()).toStrictEqual([0.5429934671731338]);
@@ -36,6 +38,8 @@ describe('Linear Regression', () => {
         const [weights, bias] = model.fit();
 
         expect([weights, bias]).toStrictEqual([[0.6381096434369923], 13.13201182243643]);
+        expect(model.predict([17])).toStrictEqual(23.979875760865298);
+        expect(model.predictBatch([[17], [170]])).toStrictEqual([23.979875760865298, 121.61065120672511]);
         expect(model.rSquared()).toStrictEqual(0.2393979741060026);
         expect(model.meanSquaredError()).toStrictEqual(1796.7101542695473);
         expect(model.pearson()).toStrictEqual([0.5429934671731338]);
@@ -54,6 +58,8 @@ describe('Linear Regression', () => {
         const [weights, bias] = model.fit();
 
         expect([weights, bias]).toStrictEqual([[0.7558520339174016], 7.271072855627577]);
+        expect(model.predict([17])).toStrictEqual(20.120557432223404);
+        expect(model.predictBatch([[17], [170]])).toStrictEqual([20.120557432223404, 135.76591862158585]);
         expect(model.rSquared()).toStrictEqual(0.18940279995876763);
         expect(model.meanSquaredError()).toStrictEqual(1914.8098095383202);
         expect(model.pearson()).toStrictEqual([0.5429934671731338]);
@@ -76,6 +82,8 @@ describe('Linear Regression', () => {
 
         expect([weights, bias]).toStrictEqual([[0.4855781005489537], 0.8483783596443771]);
         expect(model.predict([17])).toStrictEqual(9.10320606897659);
+        expect(model.predictBatch([[17], [170]])).toStrictEqual([9.10320606897659, 83.3966554529665]);
+        expect(model.rSquared()).toStrictEqual(-11.392826512319958);
         expect(model.meanSquaredError()).toStrictEqual(2448.271726544987);
         expect(model.pearson()).toStrictEqual([-0.6527089229997943]);
     });

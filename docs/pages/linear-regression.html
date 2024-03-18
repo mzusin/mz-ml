@@ -16,8 +16,8 @@
   <link id="favicon-32" rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32.png" />
   <link id="favicon-16" rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16.png" />
 
-  <link rel="stylesheet" href="/css/styles.1710780932041.css" />
-  <!--<link rel="stylesheet" href="/js/index.1710780932041.css" />-->
+  <link rel="stylesheet" href="/css/styles.1710785789300.css" />
+  <!--<link rel="stylesheet" href="/js/index.1710785789300.css" />-->
 
 </head>
 <body class="h-screen flex flex-col font-roboto bg-white dark:bg-slate-900 dark:text-slate-100">
@@ -138,6 +138,7 @@
 
 <span class="hljs-keyword">const</span> [weights, bias] = model.<span class="hljs-title function_">fit</span>(); <span class="hljs-comment">// [[0.4855781005489537], 0.8483783596443771]</span>
 <span class="hljs-keyword">const</span> prediction = model.<span class="hljs-title function_">predict</span>([<span class="hljs-number">17</span>]); <span class="hljs-comment">// 89</span>
+<span class="hljs-keyword">const</span> predictions = model.<span class="hljs-title function_">predictBatch</span>([[<span class="hljs-number">17</span>], [<span class="hljs-number">170</span>]]); <span class="hljs-comment">// [12.91101530077734, 127.54339895600721]</span>
 
 <span class="hljs-comment">// The coefficient of determination R-Squared</span>
 <span class="hljs-keyword">const</span> r2 = model.<span class="hljs-title function_">rSquared</span>(); <span class="hljs-comment">// 0.4</span>
@@ -175,6 +176,6 @@
   </div>
 </footer>-->
 
-<script src="/js/index.1710780932041.js"></script>
+<script src="/js/index.1710785789300.js"></script>
 </body>
 </html>

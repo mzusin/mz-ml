@@ -16,8 +16,8 @@
   <link id="favicon-32" rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32.png" />
   <link id="favicon-16" rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16.png" />
 
-  <link rel="stylesheet" href="/css/styles.1710780932041.css" />
-  <!--<link rel="stylesheet" href="/js/index.1710780932041.css" />-->
+  <link rel="stylesheet" href="/css/styles.1710785789300.css" />
+  <!--<link rel="stylesheet" href="/js/index.1710785789300.css" />-->
 
 </head>
 <body class="h-screen flex flex-col font-roboto bg-white dark:bg-slate-900 dark:text-slate-100">
@@ -134,23 +134,25 @@
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LinearRegression</span> {
     <span class="hljs-attr">options</span>: <span class="hljs-title class_">ILinearRegressionOptions</span>;
-    
+
+    <span class="hljs-attr">n</span>: <span class="hljs-built_in">number</span>;
+    <span class="hljs-attr">batchSize</span>: <span class="hljs-built_in">number</span>;
     <span class="hljs-attr">weights</span>: <span class="hljs-built_in">number</span>[];
     <span class="hljs-attr">bias</span>: <span class="hljs-built_in">number</span>;
-    
+
     <span class="hljs-attr">features</span>: <span class="hljs-built_in">number</span>[][];
     <span class="hljs-attr">labels</span>: <span class="hljs-built_in">number</span>[];
-    <span class="hljs-attr">batchSize</span>: <span class="hljs-built_in">number</span>;
-    
+
     <span class="hljs-title function_">constructor</span>(<span class="hljs-params">options: ILinearRegressionOptions</span>);
-    
+
     <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> initZeroArray;
     <span class="hljs-keyword">private</span> shuffle;
     <span class="hljs-keyword">private</span> gradientDescent;
 
     <span class="hljs-title function_">fit</span>(): (<span class="hljs-built_in">number</span> | <span class="hljs-built_in">number</span>[])[];
     <span class="hljs-title function_">predict</span>(<span class="hljs-attr">features</span>: <span class="hljs-built_in">number</span>[]): <span class="hljs-built_in">number</span>;
-    
+    <span class="hljs-title function_">predictBatch</span>(<span class="hljs-attr">featuresBatch</span>: <span class="hljs-built_in">number</span>[][]): <span class="hljs-built_in">number</span>[];
+
     <span class="hljs-comment">// Statistics</span>
     <span class="hljs-title function_">rSquared</span>(): <span class="hljs-built_in">number</span>;
     <span class="hljs-title function_">meanSquaredError</span>(): <span class="hljs-built_in">number</span>;
@@ -183,6 +185,6 @@
   </div>
 </footer>-->
 
-<script src="/js/index.1710780932041.js"></script>
+<script src="/js/index.1710785789300.js"></script>
 </body>
 </html>

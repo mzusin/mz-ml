@@ -13,23 +13,25 @@ export interface ILinearRegressionOptions {
 
 export class LinearRegression {
     options: ILinearRegressionOptions;
-    
+
+    n: number;
+    batchSize: number;
     weights: number[];
     bias: number;
-    
+
     features: number[][];
     labels: number[];
-    batchSize: number;
-    
+
     constructor(options: ILinearRegressionOptions);
-    
+
     private static initZeroArray;
     private shuffle;
     private gradientDescent;
 
     fit(): (number | number[])[];
     predict(features: number[]): number;
-    
+    predictBatch(featuresBatch: number[][]): number[];
+
     // Statistics
     rSquared(): number;
     meanSquaredError(): number;
