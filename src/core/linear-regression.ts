@@ -130,7 +130,7 @@ export class LinearRegression {
         return [newWeights, newBias];
     }
 
-    train() {
+    fit() {
         for(let i = 0; i < this.options.epochs; i++) {
 
             if (this.options.shuffle) {

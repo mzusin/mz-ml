@@ -40,7 +40,7 @@ const init = () => {
         }
     });
 
-    const [weights, bias] = model.train();
+    const [weights, bias] = model.fit();
 
     const xData = features.map(arr => arr[0]);
 

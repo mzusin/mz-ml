@@ -22,7 +22,7 @@ declare module 'mz-ml' {
         private static initZeroArray;
         private shuffle;
         private gradientDescent;
-        train(): (number | number[])[];
+        fit(): (number | number[])[];
         predict(features: number[]): number;
         rSquared(): number;
         meanSquaredError(): number;

@@ -15,7 +15,7 @@ describe('Linear Regression', () => {
             labels,
         });
 
-        const [weights, bias] = model.train();
+        const [weights, bias] = model.fit();
 
         expect([weights, bias]).toStrictEqual([[0.7492312657204566], 0.17408378352957618]);
         expect(model.rSquared()).toStrictEqual(0.16455829885857165);
@@ -33,7 +33,7 @@ describe('Linear Regression', () => {
             batchSize: 1,
         });
 
-        const [weights, bias] = model.train();
+        const [weights, bias] = model.fit();
 
         expect([weights, bias]).toStrictEqual([[0.6381096434369923], 13.13201182243643]);
         expect(model.rSquared()).toStrictEqual(0.2393979741060026);
@@ -51,7 +51,7 @@ describe('Linear Regression', () => {
             batchSize: 2,
         });
 
-        const [weights, bias] = model.train();
+        const [weights, bias] = model.fit();
 
         expect([weights, bias]).toStrictEqual([[0.7558520339174016], 7.271072855627577]);
         expect(model.rSquared()).toStrictEqual(0.18940279995876763);
@@ -72,7 +72,7 @@ describe('Linear Regression', () => {
             batchSize: 2,
         });
 
-        const [weights, bias] = model.train();
+        const [weights, bias] = model.fit();
 
         expect([weights, bias]).toStrictEqual([[0.4855781005489537], 0.8483783596443771]);
         expect(model.predict([17])).toStrictEqual(9.10320606897659);
@@ -88,7 +88,7 @@ describe('Linear Regression', () => {
             points,
         });
 
-        const [weights, bias] = model.train();
+        const [weights, bias] = model.fit();
 
         expect([weights, bias]).toStrictEqual([0.7492312657204566, 0.17408378352957618]);
     });*/

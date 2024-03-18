@@ -26,8 +26,8 @@ export class LinearRegression {
     private static initZeroArray;
     private shuffle;
     private gradientDescent;
-    
-    train(): (number | number[])[];
+
+    fit(): (number | number[])[];
     predict(features: number[]): number;
     
     // Statistics
