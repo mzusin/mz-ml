@@ -25,6 +25,7 @@ export class LinearRegression {
     constructor(options: ILinearRegressionOptions);
 
     private static initZeroArray;
+    private validateInput;
     private shuffle;
     private gradientDescent;
 

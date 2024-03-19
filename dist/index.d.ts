@@ -24,6 +24,7 @@ declare module 'mz-ml' {
         constructor(options: ILinearRegressionOptions);
 
         private static initZeroArray;
+        private validateInput;
         private shuffle;
         private gradientDescent;
 

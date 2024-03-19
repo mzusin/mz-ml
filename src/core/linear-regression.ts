@@ -57,6 +57,10 @@ export class LinearRegression {
         this.labels = [...this.options.labels];
         this.n = this.features.length > 0 ? this.features[0].length : 0;
 
+        if(!this.validateInput()) {
+            throw new Error('The input is not valid. Number of features should match the number of labels, and all features should have the same size.');
+        }
+
         // Initialize weights to zero
         this.weights = LinearRegression.initZeroArray(this.n);
         this.weights.length = this.n;
@@ -65,6 +69,17 @@ export class LinearRegression {
         this.bias = 0;
 
         this.batchSize = this.options.batchSize ?? this.features.length;
+    }
+
+    private validateInput(): boolean {
+        if(this.features.length <= 0 || this.features.length !== this.labels.length) return false;
+        const _n = this.features[0].length;
+
+        for(const feature of this.features) {
+            if(feature.length !== _n) return false;
+        }
+
+        return true;
     }
 
     private static initZeroArray(len: number) {
@@ -287,5 +302,4 @@ export class LinearRegression {
 
         return pearsonCoefficients;
     }
-
 }
