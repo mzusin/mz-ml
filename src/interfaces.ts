@@ -5,8 +5,16 @@ export interface ILinearRegressionOptions {
     learningRate: number;
 
     epochs: number;
-    epochsCallback?: (epoch: number, epochsCount: number, newWeights: number[], newBias: number) => void;
+    epochsCallback?: (params: IEpochsCallbackParams) => void;
 
     shuffle?: boolean; // shuffle data on each epoch
     batchSize?: number;
+}
+
+export interface IEpochsCallbackParams {
+    epoch: number;
+    epochsCount: number;
+    newWeights: number[];
+    newBias: number;
+    time: number; // milliseconds
 }

@@ -26,9 +26,7 @@
     "docs:website": "http-server ./docs",
     "docs:build": "node ./src/docs/generator/index.js",
     "docs:watch": "nodemon ./src/docs/generator/index.js",
-    "node:linear-regression": "node ./test/node/linear-regression.js",
-    "node:linear-regression-sgd": "node ./test/node/linear-regression-sgd.js",
-    "node:linear-regression-mini-batch": "node ./test/node/linear-regression-mini-batch.js"
+    "node:linear-regression": "node ./test/node/linear-regression.js"
   },
   "type": "module",
   "keywords": [

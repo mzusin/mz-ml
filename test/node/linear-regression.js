@@ -32,9 +32,9 @@ const init = () => {
         features,
         labels,
 
-        epochsCallback: (epoch, epochsCount, newWeights, newBias) => {
-            if(epoch % 50 === 0 || epoch === epochsCount) {
-                console.log(`epochs: ${ epoch } / ${ epochsCount }, newWeights = ${ newWeights }, newBias = ${ newBias }`);
+        epochsCallback: (params) => {
+            if(params.epoch % 50 === 0 || params.epoch === params.epochsCount) {
+                console.log(`epochs: ${ params.epoch } / ${ params.epochsCount }, newWeights = ${ params.newWeights }, newBias = ${ params.newBias }, time = ${ params.time.toFixed(2) } ms`);
             }
         }
     });
@@ -63,7 +63,7 @@ const init = () => {
         }
     ];
 
-    plot(data);
+    // plot(data);
 
     console.log('predict 50:', model.predict([50]));
     console.log('predict 100:', model.predict([100]));

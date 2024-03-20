@@ -49,6 +49,7 @@ export class LinearRegression {
     n: number;
 
     batchSize: number;
+    startTime: number;
 
     constructor(options: ILinearRegressionOptions) {
         this.options = options;
@@ -146,6 +147,9 @@ export class LinearRegression {
     }
 
     fit() {
+        this.startTime = performance.now();
+        console.log('this.startTime', this.startTime)
+
         for(let i = 0; i < this.options.epochs; i++) {
 
             if (this.options.shuffle) {
@@ -161,7 +165,14 @@ export class LinearRegression {
                 const [newWeights, newBias] = this.gradientDescent(batchFeatures, batchLabels);
 
                 if (typeof this.options.epochsCallback === 'function') {
-                    this.options.epochsCallback(i, this.options.epochs, newWeights, newBias);
+                    const endTime = performance.now();
+                    this.options.epochsCallback({
+                        epoch: i,
+                        epochsCount: this.options.epochs,
+                        newWeights,
+                        newBias,
+                        time: endTime - this.startTime,
+                    });
                 }
 
                 this.weights = newWeights;
