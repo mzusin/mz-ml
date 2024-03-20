@@ -31,6 +31,7 @@ const init = () => {
         epochs: 1000,
         features,
         labels,
+        logs: true,
 
         epochsCallback: (params) => {
             if(params.epoch % 50 === 0 || params.epoch === params.epochsCount) {
@@ -65,10 +66,10 @@ const init = () => {
 
     // plot(data);
 
-    console.log('predict 50:', model.predict([50]));
-    console.log('predict 100:', model.predict([100]));
-    console.log('predict 80:', model.predict([80]));
-    console.log('predict 11:', model.predict([11]));
+    model.predict([50], true)
+    model.predict([100], true)
+    model.predict([80], true)
+    model.predict([11], true)
 };
 
 init();

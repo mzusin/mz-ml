@@ -29,8 +29,8 @@ declare module 'mz-ml' {
         private gradientDescent;
 
         fit(): (number | number[])[];
-        predict(features: number[]): number;
-        predictBatch(featuresBatch: number[][]): number[];
+        predict(features: number[], logs?: boolean): number;
+        predictBatch(featuresBatch: number[][], logs?: boolean): number[];
 
         // Statistics
         rSquared(): number;

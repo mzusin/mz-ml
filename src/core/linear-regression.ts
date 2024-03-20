@@ -49,7 +49,6 @@ export class LinearRegression {
     n: number;
 
     batchSize: number;
-    startTime: number;
 
     constructor(options: ILinearRegressionOptions) {
         this.options = options;
@@ -147,8 +146,7 @@ export class LinearRegression {
     }
 
     fit() {
-        this.startTime = performance.now();
-        console.log('this.startTime', this.startTime)
+        const startTime = performance.now();
 
         for(let i = 0; i < this.options.epochs; i++) {
 
@@ -171,7 +169,7 @@ export class LinearRegression {
                         epochsCount: this.options.epochs,
                         newWeights,
                         newBias,
-                        time: endTime - this.startTime,
+                        time: endTime - startTime,
                     });
                 }
 
@@ -186,11 +184,13 @@ export class LinearRegression {
     /**
      * y = w1*x1 + w2*x2 + … + wn*xn + b
      */
-    predict(features: number[]) : number {
+    predict(features: number[], logs?: boolean) : number {
 
         if (features.length !== this.weights.length) {
             throw new Error('Number of features does not match the number of weights.');
         }
+
+        const startTime = performance.now();
 
         // Calculate the dot product of features and weights and add bias
         // return this.m * x + this.b;
@@ -200,14 +200,23 @@ export class LinearRegression {
             prediction += features[i] * this.weights[i];
         }
 
+        if(logs) {
+            console.log(`Prediction = ${ prediction }, ${ performance.now() - startTime } ms`);
+        }
+
         return prediction;
     }
 
-    predictBatch(featuresBatch: number[][]) : number[] {
+    predictBatch(featuresBatch: number[][], logs?: boolean) : number[] {
         const predictions: number[] = [];
+        const startTime = performance.now();
 
         for(const batch of featuresBatch) {
             predictions.push(this.predict(batch));
+        }
+
+        if(logs) {
+            console.log(`Predictions = ${ predictions }, ${ performance.now() - startTime } ms`);
         }
 
         return predictions;
