@@ -14,7 +14,7 @@ export interface ILinearRegressionOptions {
 export class LinearRegression {
     options: ILinearRegressionOptions;
 
-    n: number;
+    featuresSize: number;
     batchSize: number;
     weights: number[];
     bias: number;

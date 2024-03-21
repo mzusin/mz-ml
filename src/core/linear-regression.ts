@@ -46,7 +46,7 @@ export class LinearRegression {
 
     features: number[][];
     labels: number[];
-    n: number;
+    featuresSize: number;
 
     batchSize: number;
 
@@ -55,17 +55,14 @@ export class LinearRegression {
 
         this.features = [...this.options.features];
         this.labels = [...this.options.labels];
-        this.n = this.features.length > 0 ? this.features[0].length : 0;
+        this.featuresSize = this.features.length > 0 ? this.features[0].length : 0;
 
         if(!this.validateInput()) {
             throw new Error('The input is not valid. Number of features should match the number of labels, and all features should have the same size.');
         }
 
         // Initialize weights to zero
-        this.weights = LinearRegression.initZeroArray(this.n);
-        this.weights.length = this.n;
-        this.weights.fill(0);
-
+        this.weights = LinearRegression.initZeroArray(this.featuresSize);
         this.bias = 0;
 
         this.batchSize = this.options.batchSize ?? this.features.length;
@@ -91,7 +88,7 @@ export class LinearRegression {
 
     private shuffle() {
         const indices: number[] = [];
-        for(let i=0; i<this.n; i++) {
+        for(let i=0; i<this.featuresSize; i++) {
             indices.push(i);
         }
 
@@ -108,7 +105,7 @@ export class LinearRegression {
 
     private gradientDescent(batchFeatures: number[][], batchLabels: number[]) : [ number[], number ] {
 
-        const mGradientSums = LinearRegression.initZeroArray(this.n);
+        const mGradientSums = LinearRegression.initZeroArray(this.featuresSize);
         let bGradientSum = 0;
 
         for (let i = 0; i < batchFeatures.length; i++) {
@@ -120,7 +117,7 @@ export class LinearRegression {
             const diff = actualValue - predictedValue;
 
             // dE/dm = (-2/n) * sum_from_0_to_n(x * (actual_value - (mx + b)))
-            for (let j = 0; j < this.n; j++) {
+            for (let j = 0; j < this.featuresSize; j++) {
                 mGradientSums[j] += -2 * _features[j] * diff;
             }
 
@@ -177,6 +174,8 @@ export class LinearRegression {
                 this.bias = newBias;
             }
         }
+
+        console.log('------------', Math.fround)
 
         return [this.weights, this.bias];
     }
@@ -300,7 +299,7 @@ export class LinearRegression {
         const pearsonCoefficients: number[] = [];
         const yMean = this.labels.reduce((sum, y) => sum + y, 0) / this.labels.length;
 
-        for (let featureIndex = 0; featureIndex < this.n; featureIndex++) {
+        for (let featureIndex = 0; featureIndex < this.featuresSize; featureIndex++) {
             let sumXY = 0; // Sum of the product of (x - xMean) and (y - yMean)
             let sumX2 = 0; // Sum of squared differences between x and xMean
             let sumY2 = 0; // Sum of squared differences between y and yMean
