@@ -284,6 +284,8 @@ export class LinearRegression {
      * between two variables. It's commonly used to assess the strength of association
      * between two continuous variables.
      *
+     * P = (sum_of(feature - mean(feature_col)) * sum_of(label - mean(label_col))) / sqrt(  sum_of( (feature - mean(feature_col))^2 ) *  sum_of( (y - mean(label_col))^2 ) )
+     *
      * Range [-1, 1]
      * r=1 indicates a perfect positive linear relationship,
      *      meaning that as one variable increases, the other variable increases proportionally.
@@ -297,23 +299,23 @@ export class LinearRegression {
         if (this.features.length <= 0 || this.labels.length <= 0) return [];
 
         const pearsonCoefficients: number[] = [];
-        const yMean = this.labels.reduce((sum, y) => sum + y, 0) / this.labels.length;
+        const labelsMean = this.labels.reduce((sum, y) => sum + y, 0) / this.labels.length; // yMean
 
         for (let featureIndex = 0; featureIndex < this.featuresSize; featureIndex++) {
-            let sumXY = 0; // Sum of the product of (x - xMean) and (y - yMean)
-            let sumX2 = 0; // Sum of squared differences between x and xMean
-            let sumY2 = 0; // Sum of squared differences between y and yMean
+            let sumXY = 0; // sum_of((feature - featuresColumnMean) * (label - labelsMean));
+            let sumX2 = 0; // sum_of((feature - featuresColumnMean) ** 2)
+            let sumY2 = 0; // sum_of((label - labelsMean) ** 2)
 
-            const xValues = this.features.map(feature => feature[featureIndex]);
-            const xMean = xValues.reduce((sum, x) => sum + x, 0) / xValues.length;
+            const featuresColumn = this.features.map(feature => feature[featureIndex]);
+            const featuresColumnMean = featuresColumn.reduce((sum, x) => sum + x, 0) / featuresColumn.length; // xMean
 
             for (let i = 0; i < this.features.length; i++) {
-                const x = this.features[i][featureIndex];
-                const y = this.labels[i];
+                const feature = this.features[i][featureIndex];
+                const label = this.labels[i];
 
-                sumXY += (x - xMean) * (y - yMean);
-                sumX2 += (x - xMean) ** 2;
-                sumY2 += (y - yMean) ** 2;
+                sumXY += (feature - featuresColumnMean) * (label - labelsMean);
+                sumX2 += (feature - featuresColumnMean) ** 2;
+                sumY2 += (label - labelsMean) ** 2;
             }
 
             pearsonCoefficients.push((sumX2 === 0 || sumY2 === 0) ? 0 : (sumXY / Math.sqrt(sumX2 * sumY2)));
