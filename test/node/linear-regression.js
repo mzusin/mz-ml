@@ -64,7 +64,7 @@ const init = () => {
         }
     ];
 
-    // plot(data);
+    plot(data);
 
     model.predict([50], true)
     model.predict([100], true)

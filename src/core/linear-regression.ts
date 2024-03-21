@@ -53,8 +53,8 @@ export class LinearRegression {
     constructor(options: ILinearRegressionOptions) {
         this.options = options;
 
-        this.features = [...this.options.features];
-        this.labels = [...this.options.labels];
+        this.features = JSON.parse(JSON.stringify(this.options.features));
+        this.labels = JSON.parse(JSON.stringify(this.options.labels));
         this.featuresSize = this.features.length > 0 ? this.features[0].length : 0;
 
         if(!this.validateInput()) {
@@ -70,10 +70,10 @@ export class LinearRegression {
 
     private validateInput(): boolean {
         if(this.features.length <= 0 || this.features.length !== this.labels.length) return false;
-        const _n = this.features[0].length;
+        const _featuresSize = this.features[0].length;
 
         for(const feature of this.features) {
-            if(feature.length !== _n) return false;
+            if(feature.length !== _featuresSize) return false;
         }
 
         return true;
