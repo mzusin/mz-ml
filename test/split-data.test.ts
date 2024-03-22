@@ -111,9 +111,9 @@ describe('Split Data', () => {
         const result = splitData(testData);
 
         expect(result.featuresTrain).toStrictEqual([[17], [170], [80], [29], [124]]);
-        expect(result.labelsTrain).toStrictEqual([91,66,58,9,24]);
+        expect(result.labelsTrain).toStrictEqual([91, 66, 58, 9, 24]);
         expect(result.featuresTest).toStrictEqual([[28], [200]]);
-        expect(result.labelsTest).toStrictEqual([84,126]);
+        expect(result.labelsTest).toStrictEqual([84, 126]);
         expect(result.featuresValidation).toStrictEqual([[33]]);
         expect(result.labelsValidation).toStrictEqual([14]);
     });

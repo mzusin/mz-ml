@@ -7,12 +7,14 @@ This project is a collection of TypeScript machine learning helpers and utilitie
 - Evaluate model performance using statistical data (R-squared, mean squared error, pearson correlation coefficient).
 - Batch size support.
 - Shuffle support.
+- Split data to training set, test set, and optional validation set.
 
 ## Documentation 🔖
 ### Main 
 - [Linear Regression](https://ml.mzsoft.org/pages/linear-regression.html)
 - [Simple Linear Regression](https://ml.mzsoft.org/pages/simple-linear-regression.html)
 - [Interfaces](https://ml.mzsoft.org/pages/interfaces.html)
+- [Utilities](https://ml.mzsoft.org/pages/utilities.html)
 ------------------------------
 
 ```                                                                 

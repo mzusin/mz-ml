@@ -1,7 +1,5 @@
 import { plot } from 'nodeplotlib'; // https://github.com/ngfelixl/nodeplotlib
-/*import { getRandomInt } from 'mz-math';
-import fs from 'fs';*/
-import { LinearRegression } from '../../dist/mz-ml.node.cjs';
+import { LinearRegression, splitData } from '../../dist/mz-ml.node.cjs';
 
 /*const createRandomData = () => {
 
@@ -26,11 +24,17 @@ const init = () => {
 
     const labels = [91,66,58,9,24,84,126,14,87,90,72,24,119,8,31,75,92,26,161,115,87,9,29,114,69,65,113,70,78,76,92,16,95,100,127,107,141,90,165,94,85,78,147,11,109,71,100,106,59,133,134,14,60,65,111,25,184,91,88,55,43,57,7,132,87,180,79,158,34,147,199,73,171,75,95,78,97,111,80,31,4,192,125,56,195,50,76,74,133,68,34,91,141,20,2,90,192,104,100,1];
 
+    const result = splitData({
+        features,
+        labels,
+        testSetSize: 0.2,
+    });
+
     const model = new LinearRegression({
         learningRate: 0.00001,
         epochs: 1000,
-        features,
-        labels,
+        features: result.featuresTrain,
+        labels: result.labelsTrain,
         logs: true,
 
         epochsCallback: (params) => {
@@ -42,7 +46,7 @@ const init = () => {
 
     const [weights, bias] = model.fit();
 
-    const xData = features.map(arr => arr[0]);
+    const xData = result.featuresTrain.map(arr => arr[0]);
 
     const lineData = [];
 
@@ -50,10 +54,10 @@ const init = () => {
         lineData.push(weights[0] * xData[i] + bias);
     }
 
-    const data = [
+    plot([
         {
             x: xData,
-            y: labels,
+            y: result.labelsTrain,
             mode: 'markers',
             type: 'scatter',
         },
@@ -62,14 +66,28 @@ const init = () => {
             y: lineData,
             type: 'scatter',
         }
-    ];
+    ]);
 
-    plot(data);
+    const predictedLabels = model.predictBatch(result.featuresTest);
 
-    model.predict([50], true)
+    plot([
+        {
+            x: result.featuresTest.map(arr => arr[0]),
+            y: result.labelsTest,
+            mode: 'markers',
+            type: 'scatter',
+        },
+        {
+            x: result.featuresTest.map(arr => arr[0]),
+            y: predictedLabels,
+            type: 'scatter',
+        }
+    ]);
+
+    /*model.predict([50], true)
     model.predict([100], true)
     model.predict([80], true)
-    model.predict([11], true)
+    model.predict([11], true)*/
 };
 
 init();
