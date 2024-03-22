@@ -11,6 +11,7 @@ This project is a collection of TypeScript machine learning helpers and utilitie
 ## Documentation 🔖
 ### Main 
 - [Linear Regression](https://ml.mzsoft.org/pages/linear-regression.html)
+- [Simple Linear Regression](https://ml.mzsoft.org/pages/simple-linear-regression.html)
 - [Interfaces](https://ml.mzsoft.org/pages/interfaces.html)
 ------------------------------
 

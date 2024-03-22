@@ -175,8 +175,6 @@ export class LinearRegression {
             }
         }
 
-        console.log('------------', Math.fround)
-
         return [this.weights, this.bias];
     }
 

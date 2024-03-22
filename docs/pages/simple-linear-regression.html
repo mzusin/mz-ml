@@ -116,79 +116,41 @@
           <path d="m7 7 5 5-5 5m6-10 5 5-5 5"/>
         </svg>
 
-    </div><div class="flex flex-col" data-links><a href="/pages/linear-regression.html" title="" class="pl-3 border-l border-slate-150 dark:border-slate-600 pb-2 text-slate-500">Linear Regression</a><a href="/pages/simple-linear-regression.html" title="" class="pl-3 border-l border-slate-150 dark:border-slate-600 pb-2 text-slate-500">Simple Linear Regression</a><a href="/pages/interfaces.html" title="" class="pl-3 border-l border-slate-150 dark:border-slate-600  text-sky-500">Interfaces</a></div>
+    </div><div class="flex flex-col" data-links><a href="/pages/linear-regression.html" title="" class="pl-3 border-l border-slate-150 dark:border-slate-600 pb-2 text-slate-500">Linear Regression</a><a href="/pages/simple-linear-regression.html" title="" class="pl-3 border-l border-slate-150 dark:border-slate-600 pb-2 text-sky-500">Simple Linear Regression</a><a href="/pages/interfaces.html" title="" class="pl-3 border-l border-slate-150 dark:border-slate-600  text-slate-500">Interfaces</a></div>
       </div>
     </div>
 
     <div class="p-4 overflow-y-auto h-full md:w-100-350 dark:bg-slate-800">
-      <div class="w-800 max-w-full mx-auto my-10 leading-7 text-lg text-slate-800 dark:text-slate-200"><h1 class="text-3xl mb-8">TypesScript Definitions</h1>
-<pre class="hljs p-4 mb-4 rounded-md shadow-xl overflow-auto whitespace-pre-wrap text-base"><code><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ILinearRegressionOptions</span> {
-    <span class="hljs-attr">features</span>: <span class="hljs-built_in">number</span>[][];
-    <span class="hljs-attr">labels</span>: <span class="hljs-built_in">number</span>[];
-    <span class="hljs-attr">learningRate</span>: <span class="hljs-built_in">number</span>;
-    <span class="hljs-attr">epochs</span>: <span class="hljs-built_in">number</span>;
-    epochsCallback?: <span class="hljs-function">(<span class="hljs-params">epoch: <span class="hljs-built_in">number</span>, epochsCount: <span class="hljs-built_in">number</span>, newWeights: <span class="hljs-built_in">number</span>[], newBias: <span class="hljs-built_in">number</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;
-    shuffle?: <span class="hljs-built_in">boolean</span>;
-    batchSize?: <span class="hljs-built_in">number</span>;
-}
+      <div class="w-800 max-w-full mx-auto my-10 leading-7 text-lg text-slate-800 dark:text-slate-200"><h1 class="text-3xl mb-8">Simple Linear Regression</h1>
+<pre class="hljs p-4 mb-4 rounded-md shadow-xl overflow-auto whitespace-pre-wrap text-base"><code><span class="hljs-keyword">import</span> { <span class="hljs-title class_">SimpleLinearRegression</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;mz-ml&#x27;</span>;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LinearRegression</span> {
-    <span class="hljs-attr">options</span>: <span class="hljs-title class_">ILinearRegressionOptions</span>;
+<span class="hljs-keyword">const</span> features = [<span class="hljs-number">17</span>, <span class="hljs-number">170</span>, <span class="hljs-number">80</span>];
+<span class="hljs-keyword">const</span> labels = [<span class="hljs-number">91</span>, <span class="hljs-number">66</span>, <span class="hljs-number">58</span>];
 
-    <span class="hljs-attr">featuresSize</span>: <span class="hljs-built_in">number</span>;
-    <span class="hljs-attr">batchSize</span>: <span class="hljs-built_in">number</span>;
-    <span class="hljs-attr">weights</span>: <span class="hljs-built_in">number</span>[];
-    <span class="hljs-attr">bias</span>: <span class="hljs-built_in">number</span>;
+<span class="hljs-keyword">const</span> regression = <span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleLinearRegression</span>({
+    <span class="hljs-attr">learningRate</span>: <span class="hljs-number">0.00001</span>,
+    <span class="hljs-attr">epochs</span>: <span class="hljs-number">1000</span>,
+    features,
+    labels,
+    <span class="hljs-attr">batchSize</span>: <span class="hljs-number">2</span>, <span class="hljs-comment">// optional</span>
+});
 
-    <span class="hljs-attr">features</span>: <span class="hljs-built_in">number</span>[][];
-    <span class="hljs-attr">labels</span>: <span class="hljs-built_in">number</span>[];
+<span class="hljs-keyword">const</span> [weights, bias] = model.<span class="hljs-title function_">fit</span>(); <span class="hljs-comment">// [[0.4855781005489537], 0.8483783596443771]</span>
+<span class="hljs-keyword">const</span> prediction = model.<span class="hljs-title function_">predict</span>([<span class="hljs-number">17</span>]); <span class="hljs-comment">// 89</span>
+<span class="hljs-keyword">const</span> predictions = model.<span class="hljs-title function_">predictBatch</span>([[<span class="hljs-number">17</span>], [<span class="hljs-number">170</span>]]); <span class="hljs-comment">// [12.91101530077734, 127.54339895600721]</span>
 
-    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">options: ILinearRegressionOptions</span>);
+<span class="hljs-comment">// The coefficient of determination R-Squared</span>
+<span class="hljs-keyword">const</span> r2 = model.<span class="hljs-title function_">rSquared</span>(); <span class="hljs-comment">// 0.4</span>
 
-    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> initZeroArray;
-    <span class="hljs-keyword">private</span> validateInput;
-    <span class="hljs-keyword">private</span> shuffle;
-    <span class="hljs-keyword">private</span> gradientDescent;
+<span class="hljs-keyword">const</span> mse = model.<span class="hljs-title function_">meanSquaredError</span>(); <span class="hljs-comment">// 85.4980142561762</span>
 
-    <span class="hljs-title function_">fit</span>(): (<span class="hljs-built_in">number</span> | <span class="hljs-built_in">number</span>[])[];
-    <span class="hljs-title function_">predict</span>(<span class="hljs-attr">features</span>: <span class="hljs-built_in">number</span>[], logs?: <span class="hljs-built_in">boolean</span>): <span class="hljs-built_in">number</span>;
-    <span class="hljs-title function_">predictBatch</span>(<span class="hljs-attr">featuresBatch</span>: <span class="hljs-built_in">number</span>[][], logs?: <span class="hljs-built_in">boolean</span>): <span class="hljs-built_in">number</span>[];
-
-    <span class="hljs-comment">// Statistics</span>
-    <span class="hljs-title function_">rSquared</span>(): <span class="hljs-built_in">number</span>;
-    <span class="hljs-title function_">meanSquaredError</span>(): <span class="hljs-built_in">number</span>;
-    <span class="hljs-attr">pearson</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-built_in">number</span>[];
-}
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">IEpochsCallbackParams</span> {
-    <span class="hljs-attr">epoch</span>: <span class="hljs-built_in">number</span>;
-    <span class="hljs-attr">epochsCount</span>: <span class="hljs-built_in">number</span>;
-    <span class="hljs-attr">newWeights</span>: <span class="hljs-built_in">number</span>[];
-    <span class="hljs-attr">newBias</span>: <span class="hljs-built_in">number</span>;
-    <span class="hljs-attr">time</span>: <span class="hljs-built_in">number</span>;
-}
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ISimpleLinearRegressionOptions</span>{
-    <span class="hljs-attr">features</span>: <span class="hljs-built_in">number</span>[];
-    <span class="hljs-attr">labels</span>: <span class="hljs-built_in">number</span>[];
-
-    <span class="hljs-attr">learningRate</span>: <span class="hljs-built_in">number</span>;
-
-    <span class="hljs-attr">epochs</span>: <span class="hljs-built_in">number</span>;
-    epochsCallback?: <span class="hljs-function">(<span class="hljs-params">params: IEpochsCallbackParams</span>) =&gt;</span> <span class="hljs-built_in">void</span>;
-
-    shuffle?: <span class="hljs-built_in">boolean</span>;
-    batchSize?: <span class="hljs-built_in">number</span>;
-}
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SimpleLinearRegression</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">LinearRegression</span> {
-    <span class="hljs-title function_">constructor</span>(<span class="hljs-params">options: ISimpleLinearRegressionOptions</span>);
-}</code></pre>
+<span class="hljs-comment">// Pearson correlation coefficient</span>
+<span class="hljs-keyword">const</span> pearson = model.<span class="hljs-title function_">pearson</span>(); <span class="hljs-comment">// 0.5429934671731338</span></code></pre>
 </div>
 
-      <div class="w-800 max-w-full mx-auto grid  gap-8 items-center text-slate-500">
+      <div class="w-800 max-w-full mx-auto grid lg:grid-cols-2 gap-8 items-center text-slate-500">
 <div class="flex justify-between items-start border border-slate-200 rounded p-4">
-  <a href="/pages/simple-linear-regression.html" title="" class="mr-4 hover:text-blue-500">
+  <a href="/pages/linear-regression.html" title="" class="mr-4 hover:text-blue-500">
     <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
     <path stroke="none" d="M0 0h24v24H0z"/>
     <path d="M5 12h14M5 12l6 6m-6-6 6-6"/>
@@ -196,9 +158,24 @@
   </a>
   <div class="flex flex-col items-end justify-center">
     <div class="mb-2 text-sm text-slate-300">Previous</div>
-    <a href="/pages/simple-linear-regression.html" title="" class="hover:text-blue-500">Simple Linear Regression</a>
+    <a href="/pages/linear-regression.html" title="" class="hover:text-blue-500">Linear Regression</a>
   </div>
 </div>      
+    
+<div class="flex justify-between items-start border border-slate-200 rounded p-4">
+  
+  <div class="flex flex-col justify-center">
+    <div class="mb-2 text-sm text-slate-300">Next</div>
+    <a href="/pages/interfaces.html" title="" class="hover:text-blue-500">Interfaces</a>
+  </div>
+  
+  <a href="/pages/interfaces.html" title="" class="mr-4 hover:text-blue-500">
+    <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24">
+     <path stroke="none" d="M0 0h24v24H0z"/>
+     <path d="M5 12h14m-6 6 6-6m-6-6 6 6"/>
+  </svg>
+  </a>
+</div>  
     </div>
     </div>
 

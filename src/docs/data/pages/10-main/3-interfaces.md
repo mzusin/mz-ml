@@ -1,7 +1,7 @@
 # TypesScript Definitions
 
 ```ts
-export interface ILinearRegressionOptions {
+    export interface ILinearRegressionOptions {
     features: number[][];
     labels: number[];
     learningRate: number;
@@ -30,12 +30,37 @@ export class LinearRegression {
     private gradientDescent;
 
     fit(): (number | number[])[];
-    predict(features: number[]): number;
-    predictBatch(featuresBatch: number[][]): number[];
+    predict(features: number[], logs?: boolean): number;
+    predictBatch(featuresBatch: number[][], logs?: boolean): number[];
 
     // Statistics
     rSquared(): number;
     meanSquaredError(): number;
     pearson: () => number[];
+}
+
+export interface IEpochsCallbackParams {
+    epoch: number;
+    epochsCount: number;
+    newWeights: number[];
+    newBias: number;
+    time: number;
+}
+
+export interface ISimpleLinearRegressionOptions{
+    features: number[];
+    labels: number[];
+
+    learningRate: number;
+
+    epochs: number;
+    epochsCallback?: (params: IEpochsCallbackParams) => void;
+
+    shuffle?: boolean;
+    batchSize?: number;
+}
+
+export class SimpleLinearRegression extends LinearRegression {
+    constructor(options: ISimpleLinearRegressionOptions);
 }
 ```

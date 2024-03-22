@@ -37,4 +37,30 @@ declare module 'mz-ml' {
         meanSquaredError(): number;
         pearson: () => number[];
     }
+
+    export interface IEpochsCallbackParams {
+        epoch: number;
+        epochsCount: number;
+        newWeights: number[];
+        newBias: number;
+        time: number;
+    }
+
+    export interface ISimpleLinearRegressionOptions{
+        features: number[];
+        labels: number[];
+
+        learningRate: number;
+
+        epochs: number;
+        epochsCallback?: (params: IEpochsCallbackParams) => void;
+
+        shuffle?: boolean;
+        batchSize?: number;
+    }
+
+    export class SimpleLinearRegression extends LinearRegression {
+        constructor(options: ISimpleLinearRegressionOptions);
+    }
+
 }

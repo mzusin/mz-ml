@@ -18,3 +18,16 @@ export interface IEpochsCallbackParams {
     newBias: number;
     time: number; // milliseconds
 }
+
+export interface ISimpleLinearRegressionOptions{
+    features: number[];
+    labels: number[];
+
+    learningRate: number;
+
+    epochs: number;
+    epochsCallback?: (params: IEpochsCallbackParams) => void;
+
+    shuffle?: boolean; // shuffle data on each epoch
+    batchSize?: number;
+}
