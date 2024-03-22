@@ -2,4 +2,4 @@ https://ml.mzsoft.org
 https://ml.mzsoft.org/pages/linear-regression.html
 https://ml.mzsoft.org/pages/simple-linear-regression.html
 https://ml.mzsoft.org/pages/interfaces.html
-https://ml.mzsoft.org/pages/utilities.html
+https://ml.mzsoft.org/pages/split-data.html

@@ -1,6 +1,4 @@
-# Utilities
-
-### Split Data
+# Split Data
 
 Split data to training set, test set, and optional validation set.
 
